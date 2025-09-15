@@ -1,11 +1,31 @@
+@media (prefers-color-scheme: light) { 
+  body {
+    color: #000000;
+    background-color: #ffffff;
+  }
+}
+
+@media (prefers-color-scheme: dark) { 
+  body {
+    font-family: var(--font-inter), Avenir, Helvetica, Arial;
+    color: #FFFFFF;
+    background-color: #000000;
+  }
+}
+
 #root {
+  width: 100vw;
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
 }
 
-.logo {
+h1, h2, h3, h4, h5, h6 {
+  display: inline-block;;
+}
+
+/* .logo {
   height: 6em;
   padding: 1.5em;
   will-change: filter;
@@ -16,7 +36,7 @@
 }
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
-}
+} */
 
 @keyframes logo-spin {
   from {
@@ -26,17 +46,12 @@
     transform: rotate(360deg);
   }
 }
-
+/* CSS media query that uses the prefers-reduced-motion media feature.
+/* This feature allows you to tailor your application's animations and
+/* transitions based on the user's motion preferences, which are typically
+/* set at the operating system level. */
 @media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
+  .logo.react {
     animation: logo-spin infinite 20s linear;
   }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
 }
