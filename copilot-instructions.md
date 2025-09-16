@@ -21,6 +21,7 @@ This is a remote application for a micro-frontend architecture built with:
 - Use interface for object types
 - Use type for union types or simple aliases
 - Use meaningful type names that describe the data
+- Sort alphabetically type and interface members
 
 ### React
 

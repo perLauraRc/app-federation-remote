@@ -4,6 +4,5 @@
 /** Returns a single string with the remaining truthy class names joined by spaces.
 /**/
 export function classNames(...classes: unknown[]): string {
-  debugger;
   return classes.filter(Boolean).join(' ')
 }

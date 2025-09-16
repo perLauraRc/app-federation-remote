@@ -1,20 +1,20 @@
 @import url('https://rsms.me/inter/inter.css');
 @import url('https://fonts.google.com/share?selection.family=Anton|Roboto:ital,wght@0,100..900;1,100..900');
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @theme {
   --font-inter: InterVariable, sans-serif;
   --font-roboto: Roboto, sans-serif;
   /* HER THEME */
-  --color-my-light-brown-0: #BC8C73;
-  --color-my-dark-brown-0: #652D10;
-  --color-my-red-0: #C04738;
-  --color-my-gray-0: #796D5B;
-  --color-my-pink-0: #C35E6C;
+  --color-my-light-brown-0: #bc8c73;
+  --color-my-dark-brown-0: #652d10;
+  --color-my-red-0: #c04738;
+  --color-my-gray-0: #796d5b;
+  --color-my-pink-0: #c35e6c;
   /* FANGORIA THEME */
-  --color-powder-blue: #A7B4CE;
-  --color-moonstone: #069FB9;
-  --color-english-violet: #624D74;
+  --color-powder-blue: #a7b4ce;
+  --color-moonstone: #069fb9;
+  --color-english-violet: #624d74;
   --color-black: #020609;
   --color-prussian-blue: #033951;
   --color-byzantium: #873272;

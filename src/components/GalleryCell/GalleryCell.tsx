@@ -1,23 +1,23 @@
-import React from 'react';
-
 export interface GalleryCellProps {
-  imageSrc: string;
-  alt?: string;
-  title?: string;
-  description?: string;
+  children: React.ReactNode
+  description?: string
+  title?: string
 }
 
-/**
- * GalleryCell displays an image with optional title and description.
- */
-const GalleryCell: React.FC<GalleryCellProps> = ({ imageSrc, alt = '', title, description }) => {
-  return (
-    <div className="gallery-cell rounded-lg overflow-hidden shadow-md bg-white dark:bg-gray-900 p-4 flex flex-col items-center">
-      <img src={imageSrc} alt={alt} className="w-full h-48 object-cover mb-2 rounded" />
-      {title && <h3 className="text-lg font-semibold mb-1">{title}</h3>}
-      {description && <p className="text-gray-600 dark:text-gray-300 text-sm">{description}</p>}
-    </div>
-  );
-};
+const gridCellClassName =
+  'relative cursor-pointer w-1/3 aspect-3/2 flex items-center justify-center border-1 border-gray-900 dark:border-powder-blue pt-6 pr-8 pb-6 pl-8'
+const gridCellContentClassName =
+  'absolute z-gridCellHovered left-0 top-0 flex items-center justify-center pt-6 pr-8 pb-6 pl-8 -inset-1 -skew-y-4 scale-103 font-roboto font-bold text-[1rem]/1 lg:text-[1.5rem]/8 text-gray-900 dark:text-gray-200 -tracking-normal bg-gradient-to-r from-byzantium to-prussian-blue opacity-0 transition duration-300 ease-in-out hover:opacity-95'
 
-export default GalleryCell;
+const GalleryCell = ({ children, description, title }: GalleryCellProps) => {
+  return (
+    <div className={gridCellClassName}>
+      <div className={gridCellContentClassName}>
+        {description && title && `${title.toUpperCase()} :: ${description}`}
+      </div>
+      {children}
+    </div>
+  )
+}
+
+export default GalleryCell

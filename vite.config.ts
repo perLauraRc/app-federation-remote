@@ -13,6 +13,7 @@ export default defineConfig({
       filename: 'remoteEntry.js',
       exposes: {
         './Background': './src/components/Background/Background',
+        './GalleryCell': './src/components/GalleryCell/GalleryCell',
       },
       shared: ['react', 'react-dom']
     })
