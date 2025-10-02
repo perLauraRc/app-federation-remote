@@ -5,11 +5,13 @@ This document provides instructions and guidelines for GitHub Copilot when worki
 ## Project Overview
 
 This is a remote application for a micro-frontend architecture built with:
+
 - Vite
 - React 18
 - TypeScript
-- TailwindCSS 3
+- TailwindCSS 4
 - Module Federation
+- Vitest and Testing Library for testing
 
 ## Coding Standards
 
@@ -21,7 +23,7 @@ This is a remote application for a micro-frontend architecture built with:
 - Use interface for object types
 - Use type for union types or simple aliases
 - Use meaningful type names that describe the data
-- Sort alphabetically type and interface members
+- Sort alphabetically type and interface props
 
 ### React
 
@@ -30,6 +32,7 @@ This is a remote application for a micro-frontend architecture built with:
 - Implement error boundaries where necessary
 - Follow React 18 best practices
 - Use proper component file structure:
+
   ```
   components/
     ComponentName/
@@ -37,6 +40,14 @@ This is a remote application for a micro-frontend architecture built with:
       ComponentName.test.tsx
       ComponentName.styles.css
   ```
+
+  - Automatically update the index.ts file in the components folder to export new added components
+
+### Type Safety
+
+•⁠ ⁠Use TypeScript types/interfaces
+•⁠ ⁠Prefer type annotations for component props
+•⁠ ⁠Do not use FC type for functional components, use Direct Props Annotation instead
 
 ### Styling
 
@@ -70,6 +81,7 @@ This is a remote application for a micro-frontend architecture built with:
 5. Styles
 
 Example:
+
 ```typescript
 import { useState } from 'react'
 import { ComponentName } from './components'
@@ -84,6 +96,17 @@ import './styles.css'
 - Extract reusable logic into custom hooks
 - Place shared types in `types/` directory
 - Place utility functions in `utils/` directory
+- Modularize components so to comply with atomic methodology following the following hierarchy:
+
+  ```
+  src/
+    components/
+      /atoms
+      /molecules
+      /organisms
+      /templates
+      /pages
+  ```
 
 ### Error Handling
 

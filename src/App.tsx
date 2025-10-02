@@ -2,7 +2,13 @@ import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import theodore_her from './assets/theodore-her.jpg'
 import './App.css'
-import { Background, type Size, GalleryCell } from './components'
+import {
+  Background,
+  type Size,
+  GalleryCell,
+  ErrorPage,
+  CircleProgress
+} from '@/components'
 
 const widthBySize: Record<Size, string> = {
   small: 'w-16',
@@ -12,7 +18,6 @@ const widthBySize: Record<Size, string> = {
 }
 
 const hyperlinkClassName = 'contents'
-;('absolute z-gridCellHovered left-0 top-0 flex items-center justify-center pt-6 pr-8 pb-6 pl-8 -inset-1 -skew-y-4 scale-103 font-roboto font-bold text-[1rem]/1 lg:text-[1.5rem]/8 text-gray-900 dark:text-gray-200 -tracking-normal bg-gradient-to-r from-byzantium to-prussian-blue opacity-0 transition duration-300 ease-in-out hover:opacity-100')
 
 const App = () => (
   <>
@@ -26,6 +31,9 @@ const App = () => (
       </span>
     </h1>
     <div className="w-full flex flex-wrap mt-6 mb-6">
+      <GalleryCell description="Valu 9.5238%" title="CircleProgress">
+        <CircleProgress value={9.5238} size={200} strokeWidth={32} />
+      </GalleryCell>
       <GalleryCell>
         <a
           href="https://vite.dev"
@@ -158,7 +166,26 @@ const App = () => (
         description="Size full - Aspect ratio 16/9"
         title="Background"
       >
-        <Background aspectRatio="16/9" src={theodore_her} size="full" />
+        <Background
+          aspectRatio="16/9"
+          src={theodore_her}
+          size="full"
+          position="absolute"
+        />
+      </GalleryCell>
+      <GalleryCell
+        description="Status 404 - Title Page Not Found"
+        title="ErrorPage"
+      >
+        <ErrorPage
+          action={
+            <button className="border-1 pt-1 pr-2 pb-1 pl-2">
+              Go back home
+            </button>
+          }
+          status={404}
+          title="Page Not Found because the ball didn't want to go in"
+        />
       </GalleryCell>
     </div>
   </>
