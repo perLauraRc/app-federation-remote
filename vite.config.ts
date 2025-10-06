@@ -26,6 +26,11 @@ export default defineConfig({
           import: './src/components/templates/ErrorPage/ErrorPage',
           dontAppendStylesToHead: true
         },
+        './FixturesCarousel': {
+          import:
+            './src/components/organisms/FixturesCarousel/FixturesCarousel',
+          dontAppendStylesToHead: true
+        },
         './GalleryCell': {
           import: './src/components/atoms/GalleryCell/GalleryCell',
           dontAppendStylesToHead: true

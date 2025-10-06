@@ -7,8 +7,14 @@ import {
   type Size,
   GalleryCell,
   ErrorPage,
-  CircleProgress
+  CircleProgress,
+  FixturesCarousel
 } from '@/components'
+
+import type { Match } from '@/types'
+
+// import { matches, zeroMatches } from '../mockData/fixtures.ts'
+import { matches } from '../mockData/fixtures.ts'
 
 const widthBySize: Record<Size, string> = {
   small: 'w-16',
@@ -31,6 +37,9 @@ const App = () => (
       </span>
     </h1>
     <div className="w-full flex flex-wrap mt-6 mb-6">
+      <GalleryCell>
+        <FixturesCarousel fixtures={matches as Match[]} />
+      </GalleryCell>
       <GalleryCell description="Valu 9.5238%" title="CircleProgress">
         <CircleProgress value={9.5238} size={200} strokeWidth={32} />
       </GalleryCell>

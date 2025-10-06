@@ -47,7 +47,7 @@ This is a remote application for a micro-frontend architecture built with:
 
 •⁠ ⁠Use TypeScript types/interfaces
 •⁠ ⁠Prefer type annotations for component props
-•⁠ ⁠Do not use FC type for functional components, use Direct Props Annotation instead
+•⁠ ⁠Do not use React.FC for functional components, use Direct Props Annotation instead
 
 ### Styling
 
