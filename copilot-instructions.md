@@ -11,7 +11,7 @@ This is a remote application for a micro-frontend architecture built with:
 - TypeScript
 - TailwindCSS 4
 - Module Federation
-- Vitest and Testing Library for testing
+- Vitest and React Testing Library for testing
 
 ## Coding Standards
 

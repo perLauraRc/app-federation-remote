@@ -1,23 +1,23 @@
-// import { render, screen } from '@testing-library/react';
-// import GalleryCell, { type GalleryCellProps } from './GalleryCell';
+import { render, screen } from '@testing-library/react'
+import { describe, expect, it } from 'vitest'
+import GalleryCell from './GalleryCell'
 
-// describe('GalleryCell', () => {
-//   const props: GalleryCellProps = {
-//     imageSrc: 'test.jpg',
-//     alt: 'Test image',
-//     title: 'Test Title',
-//     description: 'Test Description',
-//   };
+describe('GalleryCell', () => {
+  it('renders children', () => {
+    render(<GalleryCell children={<p>Test Children</p>} />)
+    expect(screen.getByText('Test Children')).toBeInTheDocument()
+  })
 
-//   it('renders image, title, and description', () => {
-//     render(<GalleryCell {...props} />);
-//     expect(screen.getByAltText('Test image')).toBeInTheDocument();
-//     expect(screen.getByText('Test Title')).toBeInTheDocument();
-//     expect(screen.getByText('Test Description')).toBeInTheDocument();
-//   });
-
-//   it('renders without title and description', () => {
-//     render(<GalleryCell imageSrc="test.jpg" />);
-//     expect(screen.getByRole('img')).toBeInTheDocument();
-//   });
-// });
+  it('renders children, description and title', () => {
+    render(
+      <GalleryCell
+        children={<p>Test Children</p>}
+        description="Test Description"
+        title="Test Title"
+      />
+    )
+    expect(screen.getByText('Test Children')).toBeInTheDocument()
+    expect(screen.getByText(/Test Title/i)).toBeInTheDocument()
+    expect(screen.getByText(/Test Description/i)).toBeInTheDocument()
+  })
+})

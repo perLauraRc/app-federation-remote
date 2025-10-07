@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import type { Match, Team } from '@/types'
 import { MatchStatuses } from '@/constants/restApi'
-import { formatDateTime } from '@/utils'
+import { classNames, formatDateTime } from '@/utils'
 
 export interface FixturesCarouselProps {
   // Auto-advance interval in ms (disabled if 0)
@@ -21,10 +21,11 @@ function FixturesCarousel({
   className,
   fixtures,
   onSelect,
-  visibleCount = 1
+  visibleCount = 3
 }: FixturesCarouselProps) {
   const containerRef = useRef<HTMLDivElement | null>(null)
   const [currentIndex, setCurrentIndex] = useState(0)
+  const [dragging, setDragging] = useState(false)
 
   const cardWidthPercent = 100 / visibleCount
 
@@ -37,9 +38,9 @@ function FixturesCarousel({
     (i: number) => {
       if (!containerRef.current) return
       const clamped = clampCurrentIndex(i)
-      const el = containerRef.current
-      const scrollLeft = (el.scrollWidth * clamped) / fixtures.length
-      el.scrollTo({ left: scrollLeft, behavior: 'smooth' })
+      const fixturesTrack = containerRef.current
+      const scrollLeft = (fixturesTrack.scrollWidth * clamped) / fixtures.length
+      fixturesTrack.scrollTo({ left: scrollLeft, behavior: 'smooth' })
       setCurrentIndex(clamped)
     },
     [clampCurrentIndex, fixtures.length]
@@ -57,14 +58,15 @@ function FixturesCarousel({
   // Auto scroll
   useEffect(() => {
     if (!autoScrollInterval) return
-    const id = setInterval(() => {
-      setCurrentIndex((curr) => {
-        const showNextIdx = curr + 1 >= fixtures.length ? 0 : curr + 1
+    const interval = setInterval(() => {
+      setCurrentIndex((currentIndex) => {
+        const showNextIdx =
+          currentIndex + 1 >= fixtures.length ? 0 : currentIndex + 1
         scrollTo(showNextIdx)
         return showNextIdx
       })
     }, autoScrollInterval)
-    return () => clearInterval(id)
+    return () => clearInterval(interval)
   }, [autoScrollInterval, fixtures.length, scrollTo])
 
   // Keyboard navigation
@@ -78,32 +80,42 @@ function FixturesCarousel({
     }
   }
 
-  // Pointer drag support for horizontal scroll
+  // Horizontal pointer movement (drag) handled as horizontal scroll for desktop
+  // Touch devices: overflow-x container scroll works natively
+  // Trackpads/magic mouse: two-finger horizontal scroll works natively
+  // Mouse wheel: shift+wheel or horizontal wheel works natively
   const dragState = useRef<{
     startX: number
     scrollLeft: number
-    isDown: boolean
+    isDown: boolean // true when dragging
   }>({ startX: 0, scrollLeft: 0, isDown: false })
 
-  const onPointerDown = (e: React.PointerEvent) => {
+  const startScroll = (e: React.PointerEvent) => {
     if (!containerRef.current) return
+    setDragging(true)
     dragState.current = {
       startX: e.clientX,
       scrollLeft: containerRef.current.scrollLeft,
       isDown: true
     }
-    containerRef.current.setPointerCapture(e.pointerId)
+    // Some test environments (e.g., jsdom/happy-dom) may not implement pointer capture
+    containerRef.current.setPointerCapture?.(e.pointerId)
   }
   const onPointerMove = (e: React.PointerEvent) => {
     if (!dragState.current.isDown || !containerRef.current) return
+    // Compute horizontal movement: measure how far the pointer has moved since the drag began
     const dx = e.clientX - dragState.current.startX
+    // Shifts the scroll position relative to where the drag started
     containerRef.current.scrollLeft = dragState.current.scrollLeft - dx
   }
-  const endDrag = (e: React.PointerEvent) => {
+  const stopScroll = (e: React.PointerEvent) => {
+    setDragging(false)
     if (!containerRef.current) return
     dragState.current.isDown = false
-    containerRef.current.releasePointerCapture(e.pointerId)
+    containerRef.current.releasePointerCapture?.(e.pointerId)
   }
+
+  const fixturesTrackDraggingClassName = `${dragging ? 'cursor-grabbing' : 'cursor-grab'}`
 
   return (
     <div
@@ -119,6 +131,7 @@ function FixturesCarousel({
               className="cursor-pointer text-[1rem]/[1rem] px-2 py-1 rounded bg-gray-200 dark:bg-gray-700 disabled:opacity-40"
               disabled={currentIndex === 0}
               onClick={showPrevious}
+              role="button"
             >
               ◀
             </button>
@@ -126,6 +139,7 @@ function FixturesCarousel({
               className="cursor-pointer text-[1rem]/[1rem] px-2 py-1 rounded bg-gray-200 dark:bg-gray-700 disabled:opacity-40"
               disabled={currentIndex >= fixtures.length - 1}
               onClick={showNext}
+              role="button"
             >
               ▶
             </button>
@@ -136,14 +150,16 @@ function FixturesCarousel({
         </>
       ) : null}
       <div
-        className="flex flex-1 items-center justify-between overflow-x-auto scroll-smooth snap-x snap-mandatory touch-pan-x select-none"
+        className={classNames(
+          'flex flex-1 items-center justify-between overflow-x-auto scroll-smooth snap-x snap-mandatory touch-pan-x select-none',
+          fixturesTrackDraggingClassName
+        )}
         data-testid="fixtures-track"
-        onPointerDown={onPointerDown}
-        onPointerLeave={endDrag}
+        onPointerDown={startScroll}
+        onPointerLeave={stopScroll}
         onPointerMove={onPointerMove}
-        onPointerUp={endDrag}
+        onPointerUp={stopScroll}
         ref={containerRef}
-        style={{ scrollbarWidth: 'auto' }}
       >
         {fixtures.length ? (
           <>
@@ -242,7 +258,6 @@ function TeamBlock({ team }: TeamBlockProps) {
 
   return (
     <div className="flex flex-[0_0_35%] flex-col items-center gap-2">
-      {/* <div className="flex flex-1 max-w-[100%] justify-center"> */}
       <img
         alt={team.shortName}
         className="flex-1 max-w-[60%]"
@@ -251,7 +266,6 @@ function TeamBlock({ team }: TeamBlockProps) {
         ref={crestRef}
         src={team.crest}
       />
-      {/* </div> */}
       <span className="flex flex-[0_0_16px] text-[1rem]/[1rem] ">
         {team.shortName}
       </span>

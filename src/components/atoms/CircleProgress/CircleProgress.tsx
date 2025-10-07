@@ -1,5 +1,4 @@
 import { memo } from 'react'
-import { classNames } from '@/utils'
 
 export interface CircleProgressProps {
   /** Label for accessibility */
@@ -55,9 +54,7 @@ const CircleProgress = memo(function CircleProgress({
         strokeWidth={strokeWidth}
       />
       <circle
-        className={classNames(
-          'transform transition-all -rotate-90 translate-y-full duration-300 ease-in-out'
-        )}
+        className="transform transition-all -rotate-90 translate-y-full duration-300 ease-in-out"
         cx={size / 2}
         cy={size / 2}
         fill="transparent"
