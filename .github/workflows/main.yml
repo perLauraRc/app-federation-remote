@@ -14,21 +14,22 @@ jobs:
     steps:
       # Checkout the repository
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       # Set up Node.js environment for builds and tests (if your project requires it)
       - name: Set up Node.js
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v4
         with:
-          node-version: '14' # Specify the version of Node.js you want to use
+          node-version: '20' # Use a modern Node.js version compatible with Vite/Vitest (supports ||= &&= ??=)
+          cache: 'npm'
 
       # Install dependencies
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       # Run tests and linting (adjust commands according to your project setup)
       - name: Run tests
-        run: npm run test
+        run: npm run test:coverage
 
       - name: Run linting
         run: npm run lint
