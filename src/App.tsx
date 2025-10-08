@@ -8,7 +8,9 @@ import {
   GalleryCell,
   ErrorPage,
   CircleProgress,
-  FixturesCarousel
+  FixturesCarousel,
+  Sizes,
+  AspectRatios
 } from '@/components'
 
 import type { Match } from '@/types'
@@ -148,37 +150,45 @@ const App = () => (
         </a>
       </GalleryCell>
       <GalleryCell description="Size small" title="Background">
-        <Background src={theodore_her} size="small" />
+        <Background src={theodore_her} size={Sizes.small} />
       </GalleryCell>
       <GalleryCell description="Size medium" title="Background">
-        <Background src={theodore_her} size="medium" />
+        <Background src={theodore_her} size={Sizes.medium} />
       </GalleryCell>
       <GalleryCell description="Size large" title="Background">
-        <Background src={theodore_her} size="large" />
+        <Background src={theodore_her} size={Sizes.large} />
       </GalleryCell>
       <GalleryCell description="Size full" title="Background">
-        <Background src={theodore_her} size="full" />
+        <Background src={theodore_her} size={Sizes.full} />
       </GalleryCell>
       <GalleryCell
         description="Size full - Aspect ratio 3/2"
         title="Background"
       >
-        <Background aspectRatio="3/2" src={theodore_her} size="full" />
+        <Background
+          aspectRatio={AspectRatios['3/2']}
+          src={theodore_her}
+          size={Sizes.full}
+        />
       </GalleryCell>
       <GalleryCell
         description="Size full - Aspect ratio 4/3"
         title="Background"
       >
-        <Background aspectRatio="4/3" src={theodore_her} size="full" />
+        <Background
+          aspectRatio={AspectRatios['4/3']}
+          src={theodore_her}
+          size={Sizes.full}
+        />
       </GalleryCell>
       <GalleryCell
         description="Size full - Aspect ratio 16/9"
         title="Background"
       >
         <Background
-          aspectRatio="16/9"
+          aspectRatio={AspectRatios['16/9']}
           src={theodore_her}
-          size="full"
+          size={Sizes.full}
           position="absolute"
         />
       </GalleryCell>

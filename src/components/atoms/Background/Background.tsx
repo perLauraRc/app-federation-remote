@@ -8,7 +8,7 @@ export interface BackgroundProps {
   src?: string
 }
 
-const sizes: Record<
+const sizesClassNames: Record<
   | Size
   | 'smallWithAutoHeight'
   | 'mediumWithAutoHeight'
@@ -26,7 +26,7 @@ const sizes: Record<
   fullWithAutoHeight: 'w-full h-auto'
 }
 
-const aspectRatios: Record<AspectRatio, string> = {
+const aspectRatiosClassNames: Record<AspectRatio, string> = {
   '1/1': 'aspect-1/1',
   '3/2': 'aspect-3/2',
   '4/3': 'aspect-4/3',
@@ -40,7 +40,9 @@ const Background = ({
   src
 }: BackgroundProps) => {
   const getSizeClass = (size: Size) => {
-    return aspectRatio ? sizes[`${size}WithAutoHeight`] : sizes[size]
+    return aspectRatio
+      ? sizesClassNames[`${size}WithAutoHeight`]
+      : sizesClassNames[size]
   }
 
   if (!src) {
@@ -49,7 +51,8 @@ const Background = ({
 
   return (
     <div
-      className={`${position ?? ''} ${getSizeClass(size)} ${aspectRatio ? aspectRatios[aspectRatio] : ''} bg-cover bg-center`}
+      className={`${position ?? ''} ${getSizeClass(size)} ${aspectRatio ? aspectRatiosClassNames[aspectRatio] : ''} bg-cover bg-center`}
+      data-testid="background-container"
       style={{ backgroundImage: `url(${src})` }}
     />
   )

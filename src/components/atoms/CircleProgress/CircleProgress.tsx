@@ -26,7 +26,6 @@ const CircleProgress = memo(function CircleProgress({
   strokeWidth = 8,
   value
 }: CircleProgressProps) {
-  // Ensure value is between 0 and 100
   const normalizedValue = Math.max(0, Math.min(100, value))
 
   const radius = (size - strokeWidth) / 2

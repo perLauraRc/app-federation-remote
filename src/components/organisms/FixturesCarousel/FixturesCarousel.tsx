@@ -21,7 +21,7 @@ function FixturesCarousel({
   className,
   fixtures,
   onSelect,
-  visibleCount = 3
+  visibleCount = 2
 }: FixturesCarouselProps) {
   const containerRef = useRef<HTMLDivElement | null>(null)
   const [currentIndex, setCurrentIndex] = useState(0)
@@ -29,6 +29,7 @@ function FixturesCarousel({
 
   const cardWidthPercent = 100 / visibleCount
 
+  // Ensure currentIndex is between 0 and the number of fixtures - 1
   const clampCurrentIndex = useCallback(
     (i: number) => Math.max(0, Math.min(fixtures.length - 1, i)),
     [fixtures.length]
@@ -160,6 +161,7 @@ function FixturesCarousel({
         onPointerMove={onPointerMove}
         onPointerUp={stopScroll}
         ref={containerRef}
+        role="group"
       >
         {fixtures.length ? (
           <>
@@ -193,21 +195,37 @@ function FixturesCarousel({
 
               return (
                 <div
-                  className="flex flex-col gap-4 h-full justify-between snap-start"
+                  className="flex flex-col gap-4 h-full snap-start"
                   key={id}
-                  role="group"
                   style={{
                     width: `${cardWidthPercent}%`,
                     minWidth: `${cardWidthPercent}%`
                   }}
                 >
-                  <div className="flex flex-1 justify-between items-start overflow-hidden">
+                  <div className="flex flex-1 justify-between overflow-hidden">
                     <TeamBlock team={homeTeam} />
-                    <span className="flex flex-1 text-[1rem]/[1rem] self-center justify-center">
+                    <span className="flex text-[1rem]/[1rem] self-center justify-center">
                       vs
                     </span>
                     <TeamBlock team={awayTeam} />
                   </div>
+                  <>
+                    {finished && (
+                      <div className="flex flex-[0_0_16px] text-[1rem]/[1rem] justify-center">
+                        FT
+                      </div>
+                    )}
+                  </>
+                  <div className="flex flex-[0_0_24px] justify-center">
+                    <button
+                      className="cursor-pointer text-[1rem]/[1rem] px-2 py-1 rounded bg-gray-200 dark:bg-gray-700 disabled:opacity-40"
+                      disabled={currentIndex >= fixtures.length - 1}
+                      onClick={() => onSelect?.(fixture)}
+                    >
+                      Stats
+                    </button>
+                  </div>
+
                   {scheduled && status === MatchStatuses.TIMED && (
                     <span className="text-[1rem]/[1rem]">
                       {formatDateTime(utcDate)}
@@ -221,20 +239,6 @@ function FixturesCarousel({
                       LIVE
                     </span>
                   )}
-                  {finished && (
-                    <span className="flex-[0_0_16px] text-[1rem]/[1rem] text-center">
-                      FT
-                    </span>
-                  )}
-                  <div className="flex flex-[0_0_24px] items-center justify-center">
-                    <button
-                      className="cursor-pointer text-[1rem]/[1rem] px-2 py-1 rounded bg-gray-200 dark:bg-gray-700 disabled:opacity-40"
-                      disabled={currentIndex >= fixtures.length - 1}
-                      onClick={() => onSelect?.(fixture)}
-                    >
-                      Stats
-                    </button>
-                  </div>
                 </div>
               )
             })}
@@ -257,16 +261,18 @@ function TeamBlock({ team }: TeamBlockProps) {
   const crestRef = useRef<HTMLImageElement | null>(null)
 
   return (
-    <div className="flex flex-[0_0_35%] flex-col items-center gap-2">
-      <img
-        alt={team.shortName}
-        className="flex-1 max-w-[60%]"
-        data-testid={`${team.shortName}-crest`}
-        loading="lazy"
-        ref={crestRef}
-        src={team.crest}
-      />
-      <span className="flex flex-[0_0_16px] text-[1rem]/[1rem] ">
+    <div className="flex flex-[0_0_35%] flex-col gap-2">
+      <div className="flex h-[calc(100%-(32px))] justify-center">
+        <img
+          alt={team.shortName}
+          className="max-w-full max-h-full object-contain"
+          data-testid={`${team.shortName}-crest`}
+          loading="lazy"
+          ref={crestRef}
+          src={team.crest}
+        />
+      </div>
+      <span className="flex flex-[0_0_24px] text-[0.875rem]/[0.875rem] justify-center items-center">
         {team.shortName}
       </span>
     </div>
