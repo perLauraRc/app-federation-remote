@@ -1,4 +1,4 @@
-import { defineConfig } from 'eslint/config'
+import { defineConfig, globalIgnores } from 'eslint/config'
 import js from '@eslint/js'
 import globals from 'globals'
 import react from 'eslint-plugin-react'
@@ -9,17 +9,24 @@ import typescriptEslint from '@typescript-eslint/eslint-plugin'
 import eslintConfigPrettier from 'eslint-config-prettier/flat'
 import tailwindcss from 'eslint-plugin-tailwindcss'
 import { fixupPluginRules } from '@eslint/compat'
-import { globalIgnores } from 'eslint/config'
 
 export default defineConfig([
+  // Base recommended configs
+  ...js.configs.recommended, // JS recommended rules loaded from js.configs.recommended
+  ...react.configs.recommended, // React recommended rules loaded from react.configs.recommended
+  ...reactHooks.configs.recommended, // React Hooks rules loaded from reactHooks.configs.recommended
+  ...tailwindcss.configs['flat/recommended'], // Tailwind recommended rules loaded from tailwindcss.configs['flat/recommended'],
+  ...typescriptEslint.configs.recommended, // TypeScript recommended rules loaded from typescriptEslint.configs.recommended
+  ...typescriptEslint.configs['recommended-type-checked'], // Additional TypeScript type-aware rules loaded from typescriptEslint.configs['recommended-type-checked']
+  // Project-specific settings and overrides
   {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      typescriptEslint.configs.recommended, // TypeScript recommended rules loaded from typescriptEslint.configs.recommended
-      typescriptEslint.configs['recommended-type-checked'] // Additional TypeScript type-aware rules loaded from typescriptEslint.configs['recommended-type-checked']
-    ],
+    files: ['**/*.{ts,tsx,js,jsx,css}'],
     plugins: {
+      react,
+      'react-hooks': fixupPluginRules(reactHooks),
+      tailwindcss,
       '@typescript-eslint': typescriptEslint
+      // 'react-refresh': fixupPluginRules(reactRefresh),
     },
     languageOptions: {
       parser: typescriptParser,
@@ -30,31 +37,8 @@ export default defineConfig([
       },
       globals: {
         ...globals.browser,
-        ...globals.jest,
         ...globals.node
       }
-    },
-    rules: {
-      // '@typescript-eslint/no-unused-vars': 'warn',
-      // '@typescript-eslint/explicit-module-boundary-types': 'off',
-      // '@typescript-eslint/no-non-null-assertion': 'off',
-    }
-  },
-  {
-    files: ['**/*.{ts,tsx,js,jsx,css}'],
-    extends: [
-      js.configs.recommended, // JS recommended rules loaded from js.configs.recommended
-      react.configs.recommended, // React recommended rules loaded from react.configs.recommended
-      reactHooks.configs.recommended, // React Hooks rules loaded from reactHooks.configs.recommended
-      tailwindcss.configs['flat/recommended'] // Tailwind recommended rules loaded from tailwind.configs['flat/recommended'],
-      // eslintConfigPrettier
-      // 'plugin:prettier/recommended',
-    ],
-    plugins: {
-      react,
-      'react-hooks': fixupPluginRules(reactHooks),
-      // 'react-refresh': fixupPluginRules(reactRefresh),
-      tailwindcss
     },
     rules: {
       // 'react-hooks/rules-of-hooks': 'error',
@@ -65,8 +49,13 @@ export default defineConfig([
       // 'tailwindcss/no-custom-classname': 'warn',
       // 'tailwindcss/no-contradicting-classname': 'error',
       // 'no-console': 'error'
+      // '@typescript-eslint/no-unused-vars': 'warn',
+      // '@typescript-eslint/explicit-module-boundary-types': 'off',
+      // '@typescript-eslint/no-non-null-assertion': 'off',
     }
   },
+  // Ignore generated output
   globalIgnores(['dist']),
-  eslintConfigPrettier // Eslint rules turned off to avoid conflicts with Prettier (should be last in the configuration array)
+  // Keep Prettier config last to disable stylistic rules that conflict with Prettier
+  ...eslintConfigPrettier // Keep Prettier config last to disable Eslint rules that conflict with Prettier
 ])
