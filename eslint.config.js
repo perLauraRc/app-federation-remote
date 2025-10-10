@@ -14,7 +14,9 @@ import tailwindcss from 'eslint-plugin-tailwindcss'
 import { globalIgnores } from 'eslint/config'
 import path from 'node:path'
 
+/* eslint-disable no-undef */
 const tailwindConfigPath = path.resolve(process.cwd(), 'tailwind.config.ts')
+/* eslint-enable no-undef */
 
 const sharedRules = {
   'jsx-quotes': ['error', 'prefer-single'],

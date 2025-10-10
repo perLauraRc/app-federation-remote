@@ -27,6 +27,10 @@ const widthBySize: Record<Size, string> = {
 
 const hyperlinkClassName = 'contents'
 
+const showFixture = () => {
+  alert(`Fixture clicked onSelect`)
+}
+
 const App = () => (
   <>
     <h1 className="max-w-(--breakpoint-md) text-[2.5rem]/11 lg:text-[5rem]/17 text-gray-900 dark:text-powder-blue tracking-tight text-pretty">
@@ -40,7 +44,11 @@ const App = () => (
     </h1>
     <div className="w-full flex flex-wrap mt-6 mb-6">
       <GalleryCell>
-        <FixturesCarousel fixtures={matches as Match[]} visibleCount={1} />
+        <FixturesCarousel
+          fixtures={matches as Match[]}
+          visibleCount={1}
+          onSelect={showFixture}
+        />
       </GalleryCell>
       <GalleryCell description="Valu 9.5238%" title="CircleProgress">
         <CircleProgress value={9.5238} size={200} strokeWidth={32} />

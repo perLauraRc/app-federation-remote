@@ -1,3 +1,5 @@
+import type React from 'react'
+
 export interface GalleryCellProps {
   children: React.ReactNode
   description?: string

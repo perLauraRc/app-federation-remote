@@ -11,7 +11,7 @@ export interface FixturesCarouselProps {
   /** List of fixture objects (required) */
   fixtures: Match[]
   /** Callback when fixture clicked */
-  onSelect?: (fixture: Match) => void
+  onSelect?: () => void
   /** Approximate number of visible cards (default 3) */
   visibleCount?: number
 }
@@ -165,7 +165,7 @@ function FixturesCarousel({
       >
         {fixtures.length ? (
           <>
-            {fixtures.map((fixture) => {
+            {fixtures.map((fixture: Match) => {
               const {
                 // area,
                 // competition,
@@ -220,7 +220,7 @@ function FixturesCarousel({
                     <button
                       className="cursor-pointer text-[1rem]/[1rem] px-2 py-1 rounded bg-gray-200 dark:bg-gray-700 disabled:opacity-40"
                       disabled={currentIndex >= fixtures.length - 1}
-                      onClick={() => onSelect?.(fixture)}
+                      onClick={() => onSelect?.()}
                     >
                       Stats
                     </button>
