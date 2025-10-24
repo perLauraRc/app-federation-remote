@@ -18,8 +18,11 @@ const ErrorPage = ({
   title
 }: ErrorPageProps) => {
   return (
-    <div className="flex flex-col min-h-screen items-center justify-center text-center">
-      <h1 className="mt-[3rem] mb-[1rem] text-my-red-0 font-[600] text-[4rem]/[4rem]">
+    <div
+      data-testid="error-page"
+      className="flex min-h-screen flex-col items-center justify-center text-center"
+    >
+      <h1 className="text-my-red-0 mt-[3rem] mb-[1rem] text-[4rem]/[4rem] font-[600]">
         {status ? `Error ${status}` : 'Error'}
       </h1>
       <h2 className="mt-[1rem] mb-[0.5rem] text-[1.75rem]/[2.25rem]">

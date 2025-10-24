@@ -16,13 +16,13 @@ export interface FixturesCarouselProps {
   visibleCount?: number
 }
 
-function FixturesCarousel({
+const FixturesCarousel = ({
   autoScrollInterval = 0,
   className,
   fixtures,
   onSelect,
   visibleCount = 2
-}: FixturesCarouselProps) {
+}: FixturesCarouselProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null)
   const [currentIndex, setCurrentIndex] = useState(0)
   const [dragging, setDragging] = useState(false)
@@ -120,16 +120,16 @@ function FixturesCarousel({
 
   return (
     <div
-      className={`relative flex flex-col gap-4 w-full h-full ${className ?? ''}`}
+      className={`relative flex h-full w-full flex-col gap-4 ${className ?? ''}`}
       data-testid="fixtures-container"
       onKeyDown={onKeyDown}
       tabIndex={0}
     >
       {fixtures.length ? (
         <>
-          <div className="absolute right-0 left-0 bottom-0 h-6 flex items-center justify-between">
+          <div className="absolute right-0 bottom-0 left-0 flex h-6 items-center justify-between">
             <button
-              className="cursor-pointer text-[1rem]/[1rem] px-2 py-1 rounded bg-gray-200 dark:bg-gray-700 disabled:opacity-40"
+              className="cursor-pointer rounded bg-gray-200 px-2 py-1 text-[1rem]/[1rem] disabled:opacity-40 dark:bg-gray-700"
               disabled={currentIndex === 0}
               onClick={showPrevious}
               role="button"
@@ -137,7 +137,7 @@ function FixturesCarousel({
               ◀
             </button>
             <button
-              className="cursor-pointer text-[1rem]/[1rem] px-2 py-1 rounded bg-gray-200 dark:bg-gray-700 disabled:opacity-40"
+              className="cursor-pointer rounded bg-gray-200 px-2 py-1 text-[1rem]/[1rem] disabled:opacity-40 dark:bg-gray-700"
               disabled={currentIndex >= fixtures.length - 1}
               onClick={showNext}
               role="button"
@@ -145,7 +145,7 @@ function FixturesCarousel({
               ▶
             </button>
           </div>
-          <h2 className="flex-[0_0_40px] text-[1.25rem]/[2.5rem] text-center">
+          <h2 className="flex-[0_0_40px] text-center text-[1.25rem]/[2.5rem]">
             {fixtures[0].competition.name}
           </h2>
         </>
@@ -195,7 +195,7 @@ function FixturesCarousel({
 
               return (
                 <div
-                  className="flex flex-col gap-4 h-full snap-start"
+                  className="flex h-full snap-start flex-col gap-4"
                   key={id}
                   style={{
                     width: `${cardWidthPercent}%`,
@@ -204,21 +204,21 @@ function FixturesCarousel({
                 >
                   <div className="flex flex-1 justify-between overflow-hidden">
                     <TeamBlock team={homeTeam} />
-                    <span className="flex text-[1rem]/[1rem] self-center justify-center">
+                    <span className="flex justify-center self-center text-[1rem]/[1rem]">
                       vs
                     </span>
                     <TeamBlock team={awayTeam} />
                   </div>
                   <>
                     {finished && (
-                      <div className="flex flex-[0_0_16px] text-[1rem]/[1rem] justify-center">
+                      <div className="flex flex-[0_0_16px] justify-center text-[1rem]/[1rem]">
                         FT
                       </div>
                     )}
                   </>
                   <div className="flex flex-[0_0_24px] justify-center">
                     <button
-                      className="cursor-pointer text-[1rem]/[1rem] px-2 py-1 rounded bg-gray-200 dark:bg-gray-700 disabled:opacity-40"
+                      className="cursor-pointer rounded bg-gray-200 px-2 py-1 text-[1rem]/[1rem] disabled:opacity-40 dark:bg-gray-700"
                       disabled={currentIndex >= fixtures.length - 1}
                       onClick={() => onSelect?.()}
                     >
@@ -235,7 +235,7 @@ function FixturesCarousel({
                     <span className="text-[1rem]/[1rem]">{`(Pending to confirm) ${formatDateTime(utcDate)}`}</span>
                   )}
                   {playing && (
-                    <span className="text-red-600 font-semibold animate-pulse">
+                    <span className="animate-pulse font-semibold text-red-600">
                       LIVE
                     </span>
                   )}
@@ -244,7 +244,7 @@ function FixturesCarousel({
             })}
           </>
         ) : (
-          <span className="text-[1rem]/[1rem] w-full">
+          <span className="w-full text-[1rem]/[1rem]">
             No fixtures available
           </span>
         )}
@@ -265,16 +265,17 @@ function TeamBlock({ team }: TeamBlockProps) {
       <div className="flex h-[calc(100%-(32px))] justify-center">
         <img
           alt={team.shortName}
-          className="max-w-full max-h-full object-contain"
+          className="max-h-full max-w-full object-contain"
           data-testid={`${team.shortName}-crest`}
           loading="lazy"
           ref={crestRef}
           src={team.crest}
         />
       </div>
-      <span className="flex flex-[0_0_24px] text-[0.875rem]/[0.875rem] justify-center items-center">
+      <span className="flex flex-[0_0_24px] items-center justify-center text-[0.875rem]/[0.875rem]">
         {team.shortName}
       </span>
+      sdrewrewt
     </div>
   )
 }

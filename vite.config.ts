@@ -98,6 +98,13 @@ export default defineConfig({
   build: {
     modulePreload: false,
     outDir: 'dist',
+    rollupOptions: {
+      output: {
+        entryFileNames: `assets/[name].js`,
+        chunkFileNames: `assets/[name].js`,
+        assetFileNames: `assets/[name].[ext]`
+      }
+    },
     target: 'esnext',
     minify: false, // Disables minification, making the output easier to debug
     cssCodeSplit: false, // Disables code splitting

@@ -33,8 +33,8 @@ const showFixture = () => {
 
 const App = () => (
   <>
-    <h1 className="max-w-(--breakpoint-md) text-[2.5rem]/11 lg:text-[5rem]/17 text-gray-900 dark:text-powder-blue tracking-tight text-pretty">
-      <span className="border-solid border-2 bg-gray-900 dark:bg-powder-blue border-gray-900 dark:border-powder-blue text-white dark:text-black pt-0 pr-2 pb-0 pl-2 -mr-1">
+    <h1 className="dark:text-powder-blue max-w-(--breakpoint-md) text-[2.5rem]/11 tracking-tight text-pretty text-gray-900 lg:text-[5rem]/17">
+      <span className="dark:bg-powder-blue dark:border-powder-blue -mr-1 border-2 border-solid border-gray-900 bg-gray-900 pt-0 pr-2 pb-0 pl-2 text-white dark:text-black">
         thex
       </span>
       <span>
@@ -42,7 +42,7 @@ const App = () => (
         made with Vite + React + TailwindCSS + TypeScript + Module Federation
       </span>
     </h1>
-    <div className="w-full flex flex-wrap mt-6 mb-6">
+    <div className="mt-6 mb-6 flex w-full flex-wrap">
       <GalleryCell>
         <FixturesCarousel
           fixtures={matches as Match[]}
@@ -58,6 +58,7 @@ const App = () => (
           href="https://vite.dev"
           target="_blank"
           className={hyperlinkClassName}
+          rel="noreferrer"
         >
           <img
             src={reactLogo}
@@ -71,6 +72,7 @@ const App = () => (
           href="https://vite.dev"
           target="_blank"
           className={hyperlinkClassName}
+          rel="noreferrer"
         >
           <img
             src={reactLogo}
@@ -84,6 +86,7 @@ const App = () => (
           href="https://vite.dev"
           target="_blank"
           className={hyperlinkClassName}
+          rel="noreferrer"
         >
           <img
             src={reactLogo}
@@ -97,6 +100,7 @@ const App = () => (
           href="https://vite.dev"
           target="_blank"
           className={hyperlinkClassName}
+          rel="noreferrer"
         >
           <img
             src={reactLogo}
@@ -110,6 +114,7 @@ const App = () => (
           href="https://vite.dev"
           target="_blank"
           className={hyperlinkClassName}
+          rel="noreferrer"
         >
           <img
             src={viteLogo}
@@ -123,6 +128,7 @@ const App = () => (
           href="https://vite.dev"
           target="_blank"
           className={hyperlinkClassName}
+          rel="noreferrer"
         >
           <img
             src={viteLogo}
@@ -136,6 +142,7 @@ const App = () => (
           href="https://vite.dev"
           target="_blank"
           className={hyperlinkClassName}
+          rel="noreferrer"
         >
           <img
             src={viteLogo}
@@ -149,6 +156,7 @@ const App = () => (
           href="https://vite.dev"
           target="_blank"
           className={hyperlinkClassName}
+          rel="noreferrer"
         >
           <img
             src={viteLogo}

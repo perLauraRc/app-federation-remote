@@ -1,22 +1,86 @@
-// import { defineConfig } from 'eslint/config'
-import js from '@eslint/js'
+import { defineConfig } from 'eslint/config'
 import globals from 'globals'
+import js from '@eslint/js'
 import react from 'eslint-plugin-react'
 import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
-import tseslint from 'typescript-eslint'
-import typescriptEslintParser from '@typescript-eslint/parser'
-// import typescriptEslintPlugin from '@typescript-eslint/eslint-plugin'
 import typescriptEslint from 'typescript-eslint'
-import eslintConfigPrettier from 'eslint-config-prettier/flat'
+// import typescriptEslintParser from '@typescript-eslint/parser'
 import tailwindcss from 'eslint-plugin-tailwindcss'
-// import { fixupPluginRules } from '@eslint/compat'
+import eslintConfigPrettier from 'eslint-config-prettier/flat'
 import { globalIgnores } from 'eslint/config'
+import fs from 'node:fs'
 import path from 'node:path'
 
-/* eslint-disable no-undef */
 const tailwindConfigPath = path.resolve(process.cwd(), 'tailwind.config.ts')
-/* eslint-enable no-undef */
+const indexCssPath = path.resolve(process.cwd(), 'src/index.css')
+
+// Reads index.css at build time and extracts custom color tokens from CSS @theme block
+let customColorTokens = []
+try {
+  const css = fs.readFileSync(indexCssPath, 'utf8')
+  // Collects color token names from index.css file scanning custom properties like: --color-cerulean: #325877;
+  customColorTokens = Array.from(
+    css.matchAll(/--color-([a-z0-9-]+)\s*:/gi),
+    (m) => m[1]
+  )
+} catch {
+  customColorTokens = []
+}
+
+// Tailwind utilities that accept colors
+const colorUtilities = [
+  'bg',
+  'text',
+  'border',
+  'outline',
+  'ring',
+  'ring-offset',
+  'fill',
+  'stroke',
+  'caret',
+  'accent',
+  'divide',
+  'decoration',
+  'from',
+  'via',
+  'to'
+]
+
+// Optional alpha suffixes
+const alphaSuffixes = [
+  '',
+  '/50',
+  '/100',
+  '/200',
+  '/300',
+  '/400',
+  '/500',
+  '/600',
+  '/700',
+  '/800',
+  '/900',
+  '/950'
+]
+
+// Builds explicit whitelist of classes by combining every token with every utility and alpha suffix,
+// producing literal class strings like bg-cerulean, text-violet/50
+const whitelistColorClasses = [
+  // token-based utilities: bg-cerulean, text-violet/50, etc.
+  ...customColorTokens.flatMap((token) =>
+    colorUtilities.flatMap((util) =>
+      alphaSuffixes.map((alpha) => `${util}-${token}${alpha}`)
+    )
+  )
+]
+
+// eslint-disable-next-line no-console
+console.log('Custom color tokens detected by ESLint: ', customColorTokens)
+// eslint-disable-next-line no-console
+console.log(
+  'Tailwind color classes whitelisted in ESLint: ',
+  whitelistColorClasses
+)
 
 const sharedRules = {
   'jsx-quotes': ['error', 'prefer-single'],
@@ -25,60 +89,20 @@ const sharedRules = {
   semi: ['error', 'always']
 }
 
-export default tseslint.config([
-  // ...tailwindcss.configs['flat/recommended'], // Tailwind recommended rules loaded from tailwind.configs['flat/recommended'],
+export default defineConfig([
+  js.configs.recommended, // enables the rules recommended by the ESLint team (the replacement for eslint:recommended)
+  ...typescriptEslint.configs.recommended, // enables the rules recommended by the TypeScript-ESLint team (also disables core ESLint rules known to conflict with typescript-eslint rules or cause issues in TypeScript codebases)
+  react.configs.flat.recommended,
+  reactHooks.configs.flat.recommended,
+  reactRefresh.configs.vite,
+  tailwindcss.configs['flat/recommended'],
   {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      typescriptEslint.configs.recommended, // TypeScript recommended rules loaded from typescriptEslint.configs.recommended
-      reactHooks.configs['recommended-latest'] // React Hooks rules loaded from reactHooks.configs['recommended-latest']
-
-      // typescriptEslintPlugin.configs.recommended // TypeScript recommended rules loaded from typescriptEslint.configs.recommended
-      // typescriptEslintPlugin.configs['recommended-type-checked'] // Additional TypeScript type-aware rules loaded from typescriptEslint.configs['recommended-type-checked']
-    ],
-    // plugins: {
-    //   '@typescript-eslint': typescriptEslint
-    // },
-    languageOptions: {
-      parser: typescriptEslintParser,
-      parserOptions: {
-        project: ['./tsconfig.app.json', './tsconfig.node.json'],
-        ecmaVersion: 2020,
-        sourceType: 'module'
-      },
-      globals: {
-        ...globals.browser,
-        ...globals.node
-      }
-    },
-    rules: {
-      // '@typescript-eslint/no-unused-vars': 'warn'
-      // '@typescript-eslint/explicit-module-boundary-types': 'off',
-      // '@typescript-eslint/no-non-null-assertion': 'off',
-    }
-  },
-  {
-    files: ['**/*.{ts,tsx,js,jsx}'],
-    extends: [
-      js.configs.recommended, // JS recommended rules loaded from js.configs.recommended
-      // react.configs.recommended, // FAIL (legacy) React recommended rules loaded from react.configs.recommended
-      reactHooks.configs['recommended-latest'], // React Hooks rules loaded from reactHooks.configs['recommended-latest']
-      tailwindcss.configs['flat/recommended'], // Tailwind recommended rules loaded from tailwind.configs['flat/recommended'],
-      reactRefresh.configs.vite
-      // eslintConfigPrettier
-      // 'plugin:prettier/recommended',
-    ],
-    plugins: {
-      react,
-      reactHooks,
-      // 'react-refresh': fixupPluginRules(reactRefresh),
-      tailwindcss
-    },
+    // Config object dedicated to setup path of tailwind config file before enabling the preset
+    name: 'tailwind/settings',
     settings: {
       tailwindcss: {
-        // These are the default values but feel free to customize
         callees: ['classnames', 'clsx', 'ctl'],
-        config: tailwindConfigPath, // returned from `loadConfig()` utility if not provided
+        config: tailwindConfigPath,
         cssFiles: [
           '**/*.css',
           '!**/node_modules',
@@ -89,37 +113,30 @@ export default tseslint.config([
         cssFilesRefreshRate: 5_000,
         removeDuplicates: true,
         skipClassAttribute: false,
-        whitelist: [],
+        whitelist: [
+          ...whitelistColorClasses,
+          'font\\-inter',
+          'font\\-roboto',
+          'z-gridCellHovered'
+        ], // e.g. to avoid "no-custom-classname" linting error for classes that are generated dynamically or contain custom properties
         tags: [], // can be set to e.g. ['tw'] for use in tw`bg-blue`
         classRegex: '^class(Name)?$' // can be modified to support custom attributes. E.g. "^tw$" for `twin.macro`
       }
-    },
-    rules: sharedRules
-    // rules: {
-    //   'react-hooks/rules-of-hooks': 'error',
-    //   'react-hooks/exhaustive-deps': 'warn',
-    //   'react/prop-types': 'off',
-    //   'react/react-in-jsx-scope': 'off',
-    //   'tailwindcss/classnames-order': 'warn',
-    //   'tailwindcss/no-custom-classname': 'warn',
-    //   'tailwindcss/no-contradicting-classname': 'error',
-    //   'no-console': 'error'
-    // }
+    }
   },
-  // {
-  //   files: [
-  //     'eslint.config.js',
-  //     'postcss.config.js',
-  //     'tailwind.config.ts',
-  //     '**/*.config.{ts,js}'
-  //   ],
-  //   languageOptions: {
-  //     parser: typescriptEslintParser,
-  //     parserOptions: {
-  //       project: ['./tsconfig.node.json']
-  //     }
-  //   }
-  // },
+  {
+    name: 'allfiles',
+    files: ['**/*.{js,jsx,ts,tsx,css}'],
+    languageOptions: {
+      globals: {
+        ...globals.node
+      }
+    },
+    rules: {
+      ...sharedRules,
+      'react/react-in-jsx-scope': 'off' // With new JSX transform from React 17 import of React is not needed
+    }
+  },
   globalIgnores([
     'node_modules',
     '.vitest',
@@ -128,5 +145,5 @@ export default tseslint.config([
     'coverage',
     '**/*.css'
   ]),
-  eslintConfigPrettier // Eslint rules turned off to avoid conflicts with Prettier (should be last in the configuration array)
+  eslintConfigPrettier // Overrides Eslint rules (must be last to do so)
 ])
