@@ -1,68 +1,41 @@
+/* Shared with remote app */
+@import url('https://rsms.me/inter/inter.css');
+/* Google Font Roboto (weight 100-900, italic 0-1, width 100) */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+@import 'tailwindcss';
+
+@theme {
+  --font-inter: InterVariable, sans-serif;
+  --font-roboto: Roboto, sans-serif;
+  /* HER THEME */
+  --color-my-light-brown-0: #bc8c73;
+  --color-my-dark-brown-0: #652d10;
+  --color-my-red-0: #c04738;
+  --color-my-gray-0: #796d5b;
+  --color-my-pink-0: #c35e6c;
+  /* FANGORIA THEME */
+  --color-white: #f8edeb;
+  --color-black: #020609;
+  --color-powder-blue: #a7b4ce;
+  --color-moonstone: #069fb9;
+  --color-cerulean: #325877;
+  --color-english-violet: #624d74;
+  --color-prussian-blue: #033951;
+  --color-byzantium: #873272;
+  --color-violet: #4f47e6;
+  /* LOGO COLORS */
+  --color-tiktok-red: #fe2c55;
+  /* Z-INDEXES */
+  --z-index-gridCellHovered: 10;
+  /* --drop-shadow-svg: drop-shadow-[0 0 2rem rgba(197, 213, 22, 0.35)] p-8; /* NOT WORKING */
+  /* PAGE LAYOUT */
+  --padding-w-page: 2rem;
+}
+
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased; /* For WebKit browsers (e.g., Chrome, Safari) */
+  -moz-osx-font-smoothing: grayscale; /* For Firefox on macOS */
+  text-rendering: optimizeLegibility; /* General optimization for legibility */
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-}
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
-}
+@config "../tailwind.config.ts";
