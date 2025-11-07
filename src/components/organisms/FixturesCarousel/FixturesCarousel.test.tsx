@@ -2,9 +2,7 @@ import { render, screen, fireEvent } from '@testing-library/react'
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest'
 import FixturesCarousel from './FixturesCarousel'
 
-import type { Match } from '@/types/API/match'
-
-import { matches, zeroMatches } from '@/mocks/fixtures'
+import { matchesWithFavoriteFilter, zeroMatches } from '@mocks/fixtures'
 import { act } from 'react'
 
 describe('FixturesCarousel', () => {
@@ -17,16 +15,22 @@ describe('FixturesCarousel', () => {
   })
 
   it('renders fixtures title', () => {
-    render(<FixturesCarousel fixtures={matches as Match[]} visibleCount={1} />)
+    render(
+      <FixturesCarousel fixtures={matchesWithFavoriteFilter} visibleCount={1} />
+    )
     expect(screen.getByText('UEFA Champions League')).toBeInTheDocument()
   })
   it('renders fixtures items', () => {
-    render(<FixturesCarousel fixtures={matches as Match[]} visibleCount={2} />)
+    render(
+      <FixturesCarousel fixtures={matchesWithFavoriteFilter} visibleCount={2} />
+    )
     expect(screen.getAllByText('Athletic')).toBeDefined()
     expect(screen.getAllByText('Arsenal')).toBeDefined()
   })
   it('navigates to the next fixture', () => {
-    render(<FixturesCarousel fixtures={matches as Match[]} visibleCount={1} />)
+    render(
+      <FixturesCarousel fixtures={matchesWithFavoriteFilter} visibleCount={1} />
+    )
     const nextBtn = screen.getByRole('button', {
       name: /▶/i
     }) as HTMLButtonElement
@@ -42,7 +46,9 @@ describe('FixturesCarousel', () => {
     // expect(screen.getAllByText('Union SG')).toBeDefined()
   })
   it('navigates to the previous fixture', () => {
-    render(<FixturesCarousel fixtures={matches as Match[]} visibleCount={1} />)
+    render(
+      <FixturesCarousel fixtures={matchesWithFavoriteFilter} visibleCount={1} />
+    )
     const nextBtn = screen.getByRole('button', {
       name: /▶/i
     }) as HTMLButtonElement
@@ -64,7 +70,7 @@ describe('FixturesCarousel', () => {
   it('auto scrolls to the next fixture after interval is up', () => {
     render(
       <FixturesCarousel
-        fixtures={matches as Match[]}
+        fixtures={matchesWithFavoriteFilter}
         visibleCount={1}
         autoScrollInterval={500}
       />
@@ -80,9 +86,7 @@ describe('FixturesCarousel', () => {
     expect(previousBtn.disabled).toBe(false)
   })
   it('does not show previous and next navigation', () => {
-    render(
-      <FixturesCarousel fixtures={zeroMatches as Match[]} visibleCount={3} />
-    )
+    render(<FixturesCarousel fixtures={zeroMatches} visibleCount={3} />)
     const nextBtn = screen.queryByRole('button', {
       name: /▶/i
     }) as HTMLButtonElement
@@ -93,8 +97,12 @@ describe('FixturesCarousel', () => {
     expect(nextBtn).toBeNull()
   })
   it('handles keyboard navigation with Arrow keys', () => {
-    render(<FixturesCarousel fixtures={matches as Match[]} visibleCount={1} />)
-    const container = screen.getByTestId('fixtures-container') as HTMLElement
+    render(
+      <FixturesCarousel fixtures={matchesWithFavoriteFilter} visibleCount={1} />
+    )
+    const container = screen.getByTestId(
+      'fixtures-carousel-container'
+    ) as HTMLElement
     const previousBtn = screen.queryByRole('button', {
       name: /◀/i
     }) as HTMLButtonElement
@@ -110,8 +118,10 @@ describe('FixturesCarousel', () => {
     expect(previousBtn.disabled).toBe(true)
   })
   it('supports scroll through (pointer events)', () => {
-    render(<FixturesCarousel fixtures={matches as Match[]} visibleCount={2} />)
-    const track = screen.getByTestId('fixtures-track') as HTMLElement
+    render(
+      <FixturesCarousel fixtures={matchesWithFavoriteFilter} visibleCount={2} />
+    )
+    const track = screen.getByTestId('fixtures-carousel-track') as HTMLElement
     fireEvent.pointerDown(track, { clientX: 200, pointerId: 1 })
     fireEvent.pointerMove(track, { clientX: 150, pointerId: 1 })
     fireEvent.pointerUp(track, { clientX: 150, pointerId: 1 })
