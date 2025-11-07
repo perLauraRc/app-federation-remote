@@ -1,6 +1,9 @@
-import type { Match } from '@/types/API/match'
+import type { FixtureFilter, Match } from '@src/types'
 
-export const matches = [
+// Helper function to generate random boolean values
+const getRandomBoolean = (): boolean => Math.random() < 0.5
+
+const matches: Match[] = [
   {
     area: {
       id: 2077,
@@ -11406,4 +11409,11 @@ export const matches = [
   }
 ]
 
-export const zeroMatches = [] as Match[]
+export const matchesWithFavoriteFilter: (Match & FixtureFilter)[] = matches.map(
+  (match) => ({
+    ...match,
+    isFavorite: getRandomBoolean()
+  })
+)
+
+export const zeroMatches: (Match & FixtureFilter)[] = []

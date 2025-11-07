@@ -1,7 +1,9 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
-import type { Match, Team } from '@/types'
-import { MatchStatuses } from '@/constants/restApi'
-import { classNames, formatDateTime } from '@/utils'
+/* eslint-disable no-console */
+import { useCallback, useEffect, useRef, useState } from 'react'
+import type { FixtureFilter, Match, Team } from '@src/types'
+import { MatchStatuses } from '@src/constants/restApi'
+import { classNames, formatDateTime } from '@src/utils'
+import { FavoriteIcon, IconButton } from '@src/components'
 
 export interface FixturesCarouselProps {
   // Auto-advance interval in ms (disabled if 0)
@@ -9,9 +11,9 @@ export interface FixturesCarouselProps {
   /** Additional class names (Tailwind syntax) */
   className?: string
   /** List of fixture objects (required) */
-  fixtures: Match[]
+  fixtures: (Match & FixtureFilter)[]
   /** Callback when fixture clicked */
-  onSelect?: () => void
+  onSelect?: (fixture: Match & FixtureFilter) => void
   /** Approximate number of visible cards (default 3) */
   visibleCount?: number
 }
@@ -24,6 +26,7 @@ const FixturesCarousel = ({
   visibleCount = 2
 }: FixturesCarouselProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null)
+  const addToFavoriteRef = useRef<HTMLDivElement[] | null>(null)
   const [currentIndex, setCurrentIndex] = useState(0)
   const [dragging, setDragging] = useState(false)
 
@@ -51,6 +54,7 @@ const FixturesCarousel = ({
     () => scrollTo(currentIndex + 1),
     [scrollTo, currentIndex]
   )
+
   const showPrevious = useCallback(
     () => scrollTo(currentIndex - 1),
     [scrollTo, currentIndex]
@@ -92,16 +96,41 @@ const FixturesCarousel = ({
   }>({ startX: 0, scrollLeft: 0, isDown: false })
 
   const startScroll = (e: React.PointerEvent) => {
-    if (!containerRef.current) return
+    // Must avoid triggering drag when interacting with an element that should trigger its own events
+    if (
+      !containerRef.current ||
+      (addToFavoriteRef.current &&
+        e.target instanceof Element &&
+        addToFavoriteRef.current[currentIndex]?.contains(e.target))
+    ) {
+      return
+    }
     setDragging(true)
     dragState.current = {
       startX: e.clientX,
       scrollLeft: containerRef.current.scrollLeft,
       isDown: true
     }
-    // Some test environments (e.g., jsdom/happy-dom) may not implement pointer capture
-    containerRef.current.setPointerCapture?.(e.pointerId)
+    // Enable pointer capture
+    try {
+      containerRef.current.setPointerCapture(e.pointerId)
+    } catch (error) {
+      console.log('setPointerCapture failed:', error)
+    }
   }
+
+  const stopScroll = (e: React.PointerEvent) => {
+    setDragging(false)
+    if (!containerRef.current) return
+    dragState.current.isDown = false
+    // Release pointer capture
+    try {
+      containerRef.current.releasePointerCapture(e.pointerId)
+    } catch (error) {
+      console.log('releasePointerCapture failed:', error)
+    }
+  }
+
   const onPointerMove = (e: React.PointerEvent) => {
     if (!dragState.current.isDown || !containerRef.current) return
     // Compute horizontal movement: measure how far the pointer has moved since the drag began
@@ -109,53 +138,30 @@ const FixturesCarousel = ({
     // Shifts the scroll position relative to where the drag started
     containerRef.current.scrollLeft = dragState.current.scrollLeft - dx
   }
-  const stopScroll = (e: React.PointerEvent) => {
-    setDragging(false)
-    if (!containerRef.current) return
-    dragState.current.isDown = false
-    containerRef.current.releasePointerCapture?.(e.pointerId)
-  }
 
   const fixturesTrackDraggingClassName = `${dragging ? 'cursor-grabbing' : 'cursor-grab'}`
 
   return (
     <div
       className={`relative flex h-full w-full flex-col gap-4 ${className ?? ''}`}
-      data-testid="fixtures-container"
+      data-testid="fixtures-carousel-container"
       onKeyDown={onKeyDown}
       tabIndex={0}
     >
-      {fixtures.length ? (
-        <>
-          <div className="absolute right-0 bottom-0 left-0 flex h-6 items-center justify-between">
-            <button
-              className="cursor-pointer rounded bg-gray-200 px-2 py-1 text-[1rem]/[1rem] disabled:opacity-40 dark:bg-gray-700"
-              disabled={currentIndex === 0}
-              onClick={showPrevious}
-              role="button"
-            >
-              ◀
-            </button>
-            <button
-              className="cursor-pointer rounded bg-gray-200 px-2 py-1 text-[1rem]/[1rem] disabled:opacity-40 dark:bg-gray-700"
-              disabled={currentIndex >= fixtures.length - 1}
-              onClick={showNext}
-              role="button"
-            >
-              ▶
-            </button>
-          </div>
-          <h2 className="flex-[0_0_40px] text-center text-[1.25rem]/[2.5rem]">
-            {fixtures[0].competition.name}
-          </h2>
-        </>
-      ) : null}
+      {fixtures.length && (
+        <h2 className="flex-[0_0_40px] text-center text-[1.25rem]/[2.5rem]">
+          {fixtures[0].competition.name}
+        </h2>
+      )}
       <div
         className={classNames(
-          'flex flex-1 items-center justify-between overflow-x-auto scroll-smooth snap-x snap-mandatory touch-pan-x select-none',
+          'relative flex flex-1 items-center justify-between overflow-x-auto select-none',
+          // Only apply smooth scrolling and snap when NOT dragging
+          // Keep touch-pan-x for native scrolling when not dragging
+          !dragging && 'scroll-smooth snap-x snap-mandatory touch-pan-x',
           fixturesTrackDraggingClassName
         )}
-        data-testid="fixtures-track"
+        data-testid="fixtures-carousel-track"
         onPointerDown={startScroll}
         onPointerLeave={stopScroll}
         onPointerMove={onPointerMove}
@@ -165,7 +171,7 @@ const FixturesCarousel = ({
       >
         {fixtures.length ? (
           <>
-            {fixtures.map((fixture: Match) => {
+            {fixtures.map((fixture: Match & FixtureFilter, i: number) => {
               const {
                 // area,
                 // competition,
@@ -173,6 +179,7 @@ const FixturesCarousel = ({
                 // group,
                 homeTeam,
                 id,
+                isFavorite,
                 // lastUpdated,
                 // matchday,
                 // odds,
@@ -204,9 +211,40 @@ const FixturesCarousel = ({
                 >
                   <div className="flex flex-1 justify-between overflow-hidden">
                     <TeamBlock team={homeTeam} />
-                    <span className="flex justify-center self-center text-[1rem]/[1rem]">
-                      vs
-                    </span>
+                    <div className="flex flex-col items-center justify-evenly gap-2">
+                      <div
+                        ref={(node) => {
+                          if (!addToFavoriteRef.current) {
+                            addToFavoriteRef.current = []
+                          }
+                          if (node) {
+                            addToFavoriteRef.current[i] = node
+                          } else {
+                            // Clean up the array when DOM node is unmounted
+                            delete addToFavoriteRef.current[i]
+                          }
+                        }}
+                        data-testid={`addToFavorite-btn-${id}`}
+                      >
+                        <IconButton
+                          onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                            e.stopPropagation()
+                            onSelect?.(fixture)
+                          }}
+                          color={
+                            isFavorite
+                              ? 'var(--color-tiktok-red)'
+                              : 'var(--color-white)'
+                          }
+                          size={24}
+                        >
+                          <FavoriteIcon />
+                        </IconButton>
+                      </div>
+                      <span className="flex justify-center self-center text-[1rem]/[1rem]">
+                        vs
+                      </span>
+                    </div>
                     <TeamBlock team={awayTeam} />
                   </div>
                   <>
@@ -215,30 +253,20 @@ const FixturesCarousel = ({
                         FT
                       </div>
                     )}
+                    {scheduled && status === MatchStatuses.TIMED && (
+                      <span className="text-[1rem]/[1rem]">
+                        {formatDateTime(utcDate)}
+                      </span>
+                    )}
+                    {scheduled && status === MatchStatuses.SCHEDULED && (
+                      <span className="text-[1rem]/[1rem]">{`(Pending to confirm) ${formatDateTime(utcDate)}`}</span>
+                    )}
+                    {playing && (
+                      <span className="animate-pulse font-semibold text-red-600">
+                        LIVE
+                      </span>
+                    )}
                   </>
-                  <div className="flex flex-[0_0_24px] justify-center">
-                    <button
-                      className="cursor-pointer rounded bg-gray-200 px-2 py-1 text-[1rem]/[1rem] disabled:opacity-40 dark:bg-gray-700"
-                      disabled={currentIndex >= fixtures.length - 1}
-                      onClick={() => onSelect?.()}
-                    >
-                      Stats
-                    </button>
-                  </div>
-
-                  {scheduled && status === MatchStatuses.TIMED && (
-                    <span className="text-[1rem]/[1rem]">
-                      {formatDateTime(utcDate)}
-                    </span>
-                  )}
-                  {scheduled && status === MatchStatuses.SCHEDULED && (
-                    <span className="text-[1rem]/[1rem]">{`(Pending to confirm) ${formatDateTime(utcDate)}`}</span>
-                  )}
-                  {playing && (
-                    <span className="animate-pulse font-semibold text-red-600">
-                      LIVE
-                    </span>
-                  )}
                 </div>
               )
             })}
@@ -249,6 +277,29 @@ const FixturesCarousel = ({
           </span>
         )}
       </div>
+      {fixtures.length && (
+        <div
+          className="flex h-[24px] flex-[0_0_24px] items-center justify-between"
+          data-testid="fixtures-carousel-previous-navigation"
+        >
+          <button
+            className="cursor-pointer rounded bg-gray-200 px-2 py-1 text-[1rem]/[1rem] disabled:opacity-40 dark:bg-gray-700"
+            disabled={currentIndex === 0}
+            onClick={showPrevious}
+            role="button"
+          >
+            ◀
+          </button>
+          <button
+            className="cursor-pointer rounded bg-gray-200 px-2 py-1 text-[1rem]/[1rem] disabled:opacity-40 dark:bg-gray-700"
+            disabled={currentIndex >= fixtures.length - 1}
+            onClick={showNext}
+            role="button"
+          >
+            ▶
+          </button>
+        </div>
+      )}
     </div>
   )
 }
@@ -264,18 +315,17 @@ function TeamBlock({ team }: TeamBlockProps) {
     <div className="flex flex-[0_0_35%] flex-col gap-2">
       <div className="flex h-[calc(100%-(32px))] justify-center">
         <img
-          alt={team.shortName}
+          alt={team.shortName ?? undefined}
           className="max-h-full max-w-full object-contain"
           data-testid={`${team.shortName}-crest`}
           loading="lazy"
           ref={crestRef}
-          src={team.crest}
+          src={team.crest ?? undefined}
         />
       </div>
       <span className="flex flex-[0_0_24px] items-center justify-center text-[0.875rem]/[0.875rem]">
         {team.shortName}
       </span>
-      sdrewrewt
     </div>
   )
 }
