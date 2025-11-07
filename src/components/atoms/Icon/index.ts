@@ -1,6 +1,0 @@
-export { ArrowLeftIcon } from './ArrowLeftIcon'
-export { ArrowRightIcon } from './ArrowRightIcon'
-export { DeleteIcon } from './DeleteIcon'
-export { FavoriteIcon } from './FavoriteIcon'
-export { MenuIcon } from './MenuIcon'
-export { NotificationIcon } from './NotificationIcon'

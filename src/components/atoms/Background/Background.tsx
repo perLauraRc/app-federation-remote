@@ -39,7 +39,7 @@ const Background = ({
   size = 'small',
   src
 }: BackgroundProps) => {
-  const getSizeClass = () => {
+  const getSizeClass = (size: Size) => {
     return aspectRatio
       ? sizesClassNames[`${size}WithAutoHeight`]
       : sizesClassNames[size]
@@ -51,7 +51,7 @@ const Background = ({
 
   return (
     <div
-      className={`${position ?? ''} ${getSizeClass()} ${aspectRatio ? aspectRatiosClassNames[aspectRatio] : ''} bg-cover bg-center`}
+      className={`${position ?? ''} ${getSizeClass(size)} ${aspectRatio ? aspectRatiosClassNames[aspectRatio] : ''} bg-cover bg-center`}
       data-testid="background-container"
       style={{ backgroundImage: `url(${src})` }}
     />

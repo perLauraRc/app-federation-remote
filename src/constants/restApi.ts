@@ -1,4 +1,4 @@
-import type { CompetitionId, MatchStatus } from '@src/types'
+import type { CompetitionId, MatchStatus } from '@/types'
 
 export const CompetitionIds: Record<CompetitionId, string> = {
   /** Bundesliga */

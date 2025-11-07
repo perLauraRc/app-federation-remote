@@ -25,7 +25,7 @@ export type Match = {
   homeTeam: Team
   id: number
   lastUpdated: string
-  matchday: number | null
+  matchday: number
   odds: Odds
   referees: Referee[]
   score: Score

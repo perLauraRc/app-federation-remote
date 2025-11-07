@@ -1,6 +1,6 @@
 export type PartialScore = {
-  away: number | null
-  home: number | null
+  away: number
+  home: number
 }
 
 export type Score = {
@@ -10,5 +10,5 @@ export type Score = {
   halfTime: PartialScore
   penalties?: PartialScore
   regularTime?: PartialScore
-  winner: string | null
+  winner: string
 }

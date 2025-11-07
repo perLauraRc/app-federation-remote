@@ -5,7 +5,6 @@ import federation from '@originjs/vite-plugin-federation'
 import react from '@vitejs/plugin-react'
 import tsconfigPaths from 'vite-tsconfig-paths'
 import tailwindcss from '@tailwindcss/vite'
-import path from 'node:path'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -18,66 +17,30 @@ export default defineConfig({
       filename: 'remoteEntry.js',
       exposes: {
         './Background': {
-          import: 'src/components/atoms/Background/Background',
+          import: './src/components/atoms/Background/Background',
           dontAppendStylesToHead: true
         },
         './CircleProgress': {
-          import: 'src/components/atoms/CircleProgress/CircleProgress',
+          import: './src/components/atoms/CircleProgress/CircleProgress',
           dontAppendStylesToHead: true
         },
         './ErrorPage': {
-          import: 'src/components/templates/ErrorPage/ErrorPage',
+          import: './src/components/templates/ErrorPage/ErrorPage',
           dontAppendStylesToHead: true
         },
         './FixturesCarousel': {
-          import: 'src/components/organisms/FixturesCarousel/FixturesCarousel',
+          import:
+            './src/components/organisms/FixturesCarousel/FixturesCarousel',
           dontAppendStylesToHead: true
         },
         './GalleryCell': {
-          import: 'src/components/atoms/GalleryCell/GalleryCell',
-          dontAppendStylesToHead: true
-        },
-        './IconButton': {
-          import: 'src/components/atoms/IconButton/IconButton',
-          dontAppendStylesToHead: true
-        },
-        './ArrowLeftIcon': {
-          import: 'src/components/atoms/Icon/ArrowLeftIcon',
-          dontAppendStylesToHead: true
-        },
-        './ArrowRightIcon': {
-          import: 'src/components/atoms/Icon/ArrowRightIcon',
-          dontAppendStylesToHead: true
-        },
-        './DeleteIcon': {
-          import: 'src/components/atoms/Icon/DeleteIcon',
-          dontAppendStylesToHead: true
-        },
-        './FavoriteIcon': {
-          import: 'src/components/atoms/Icon/FavoriteIcon',
-          dontAppendStylesToHead: true
-        },
-        './MenuIcon': {
-          import: 'src/components/atoms/Icon/MenuIcon',
-          dontAppendStylesToHead: true
-        },
-        './NotificationIcon': {
-          import: 'src/components/atoms/Icon/NotificationIcon',
-          dontAppendStylesToHead: true
-        },
-        './ProgressBar': {
-          import: 'src/components/atoms/ProgressBar/ProgressBar',
+          import: './src/components/atoms/GalleryCell/GalleryCell',
           dontAppendStylesToHead: true
         }
       },
       shared: ['react', 'react-dom']
     })
   ],
-  resolve: {
-    alias: {
-      '@src': path.resolve(__dirname, 'src')
-    }
-  },
   // css: {
   //   postcss: './postcss.config.js'
   // },

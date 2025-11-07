@@ -1,7 +1,7 @@
 export type Team = {
-  crest: string | null
-  id: number | null
-  name: string | null
-  shortName: string | null
-  tla: string | null
+  crest: string
+  id: number
+  name: string
+  shortName: string
+  tla: string
 }

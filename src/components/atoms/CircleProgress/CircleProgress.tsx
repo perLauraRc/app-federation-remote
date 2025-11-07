@@ -7,7 +7,7 @@ export interface CircleProgressProps {
   bgColor?: string
   /** Additional class names (Tailwind syntax) */
   className?: string
-  /** Progress color (Tailwind color variable name) */
+  /** Progress color  (Tailwind color variable name) */
   color?: string
   /** Diameter in pixels */
   size?: number
@@ -39,7 +39,6 @@ const CircleProgress = memo(function CircleProgress({
       aria-valuemin={0}
       aria-valuenow={normalizedValue}
       className={className}
-      data-testid="circle-progress-container"
       height={size}
       role="progressbar"
       viewBox={`0 0 ${size} ${size}`}
