@@ -36,6 +36,7 @@ const widthBySize: Record<Size, string> = {
 const hyperlinkClassName = 'contents'
 
 const onSelectFixture = (fixture: Match & FixtureFilter) => {
+  // eslint-disable-next-line no-console
   console.log(
     `Fixture selected: ${fixture.id} ${fixture.isFavorite ? '(Favorite)' : ''}`
   )
