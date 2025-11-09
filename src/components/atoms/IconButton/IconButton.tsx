@@ -11,11 +11,12 @@ export interface IconButtonProps extends IconProps {
 
 const IconButton = ({
   children,
-  color = 'red',
+  color = 'var(--color-violet)',
   notifications,
   onClick,
   size
 }: IconButtonProps) => {
+  const roundedNotifications = notifications ? Math.round(notifications) : 0
   // Creates an enhanced version of the children prop by cloning each child element
   // and injecting additional props (color and size) into them
   const augmentedChildren = React.Children.map(children, (child) => {
@@ -33,7 +34,7 @@ const IconButton = ({
   return (
     <button className="relative flex cursor-pointer" onClick={onClick}>
       {augmentedChildren}
-      {(notifications ?? 0) > 0 && (
+      {notifications && roundedNotifications > 0 && (
         <span
           className={`absolute flex items-center justify-center rounded-full tracking-tight text-white`}
           style={{
@@ -45,7 +46,7 @@ const IconButton = ({
             backgroundColor: color
           }}
         >
-          {formatNumberOfNotifications(notifications as number)}
+          {formatNumberOfNotifications(roundedNotifications)}
         </span>
       )}
     </button>

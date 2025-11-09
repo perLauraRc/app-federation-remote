@@ -57,27 +57,27 @@ const App = () => (
       <GalleryCell className="flex-wrap">
         <IconButton
           onClick={() => alert('IconButton clicked')}
-          color={'var(--color-byzantium)'}
+          color="var(--color-byzantium)"
           size={32}
         >
           <ArrowLeftIcon />
         </IconButton>
         <IconButton
-          color={'var(--color-byzantium)'}
+          color="var(--color-byzantium)"
           onClick={() => alert('IconButton clicked')}
           size={32}
         >
           <ArrowRightIcon />
         </IconButton>
         <IconButton
-          color={'var(--color-byzantium)'}
+          color="var(--color-byzantium)"
           onClick={() => alert('IconButton clicked')}
           size={32}
         >
           <DeleteIcon />
         </IconButton>
         <IconButton
-          color={'var(--color-byzantium)'}
+          color="var(--color-byzantium)"
           onClick={() => alert('IconButton clicked')}
           notifications={5}
           size={64}
@@ -85,14 +85,14 @@ const App = () => (
           <FavoriteIcon />
         </IconButton>
         <IconButton
-          color={'var(--color-byzantium)'}
+          color="var(--color-byzantium)"
           onClick={() => alert('IconButton clicked')}
           size={64}
         >
           <MenuIcon />
         </IconButton>
         <IconButton
-          color={'var(--color-byzantium)'}
+          color="var(--color-byzantium)"
           notifications={101}
           onClick={() => alert('IconButton clicked')}
           size={64}
