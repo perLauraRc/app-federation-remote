@@ -1,10 +1,10 @@
 {
   "compilerOptions": {
     /* Path mapping */
-    "baseUrl": "./src",
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"],
-      "@/mocks/*": ["../mocks/*"]
+      "@src/*": ["src/*"],
+      "@mocks/*": ["mocks/*"]
     },
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
     "target": "ES2022",

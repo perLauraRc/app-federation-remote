@@ -8,15 +8,23 @@ import {
   GalleryCell,
   ErrorPage,
   CircleProgress,
+  ProgressBar,
   FixturesCarousel,
   Sizes,
-  AspectRatios
-} from '@/components'
+  AspectRatios,
+  IconButton,
+  FavoriteIcon,
+  DeleteIcon,
+  MenuIcon,
+  NotificationIcon,
+  ArrowLeftIcon,
+  ArrowRightIcon
+} from '@src/components'
 
-import type { Match } from '@/types'
+import type { FixtureFilter, Match } from '@src/types'
 
-// import { matches, zeroMatches } from '../mocks/fixtures.ts'
-import { matches } from '../mocks/fixtures.ts'
+// import { matchesWithFavoriteFilter, zeroMatches } from '../mocks/fixtures.ts'
+import { matchesWithFavoriteFilter } from '@mocks/fixtures.ts'
 
 const widthBySize: Record<Size, string> = {
   small: 'w-16',
@@ -27,8 +35,11 @@ const widthBySize: Record<Size, string> = {
 
 const hyperlinkClassName = 'contents'
 
-const showFixture = () => {
-  alert(`Fixture clicked onSelect`)
+const onSelectFixture = (fixture: Match & FixtureFilter) => {
+  // eslint-disable-next-line no-console
+  console.log(
+    `Fixture selected: ${fixture.id} ${fixture.isFavorite ? '(Favorite)' : ''}`
+  )
 }
 
 const App = () => (
@@ -43,15 +54,69 @@ const App = () => (
       </span>
     </h1>
     <div className="mt-6 mb-6 flex w-full flex-wrap">
+      <GalleryCell className="flex-wrap">
+        <IconButton
+          onClick={() => alert('IconButton clicked')}
+          color="var(--color-byzantium)"
+          size={32}
+        >
+          <ArrowLeftIcon />
+        </IconButton>
+        <IconButton
+          color="var(--color-byzantium)"
+          onClick={() => alert('IconButton clicked')}
+          size={32}
+        >
+          <ArrowRightIcon />
+        </IconButton>
+        <IconButton
+          color="var(--color-byzantium)"
+          onClick={() => alert('IconButton clicked')}
+          size={32}
+        >
+          <DeleteIcon />
+        </IconButton>
+        <IconButton
+          color="var(--color-byzantium)"
+          onClick={() => alert('IconButton clicked')}
+          notifications={5}
+          size={64}
+        >
+          <FavoriteIcon />
+        </IconButton>
+        <IconButton
+          color="var(--color-byzantium)"
+          onClick={() => alert('IconButton clicked')}
+          size={64}
+        >
+          <MenuIcon />
+        </IconButton>
+        <IconButton
+          color="var(--color-byzantium)"
+          notifications={101}
+          onClick={() => alert('IconButton clicked')}
+          size={64}
+        >
+          <NotificationIcon />
+        </IconButton>
+      </GalleryCell>
       <GalleryCell>
         <FixturesCarousel
-          fixtures={matches as Match[]}
+          fixtures={matchesWithFavoriteFilter as (Match & FixtureFilter)[]}
           visibleCount={1}
-          onSelect={showFixture}
+          onSelect={onSelectFixture}
         />
       </GalleryCell>
-      <GalleryCell description="Valu 9.5238%" title="CircleProgress">
+      <GalleryCell>
         <CircleProgress value={9.5238} size={200} strokeWidth={32} />
+      </GalleryCell>
+      <GalleryCell>
+        <ProgressBar
+          bgColor="--color-violet"
+          color="--color-moonstone"
+          value={33.34}
+          width="70%"
+        />
       </GalleryCell>
       <GalleryCell>
         <a

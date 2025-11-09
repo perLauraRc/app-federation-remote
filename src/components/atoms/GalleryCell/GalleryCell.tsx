@@ -1,7 +1,10 @@
 import type React from 'react'
+import { classNames } from '@src/utils'
 
 export interface GalleryCellProps {
   children: React.ReactNode
+  /** Additional class names (Tailwind syntax) */
+  className?: string
   description?: string
   title?: string
 }
@@ -11,11 +14,16 @@ const gridCellClassName =
 const gridCellContentClassName =
   'absolute z-gridCellHovered left-0 top-0 flex items-center justify-center pt-6 pr-8 pb-6 pl-8 -inset-1 -skew-y-4 scale-103 font-roboto font-bold text-[1rem]/1 lg:text-[1.5rem]/8 text-gray-900 dark:text-gray-200 -tracking-normal bg-gradient-to-r from-byzantium to-prussian-blue transition duration-300 ease-in-out opacity-0 hover:opacity-95'
 
-const GalleryCell = ({ children, description, title }: GalleryCellProps) => {
+const GalleryCell = ({
+  children,
+  className,
+  description,
+  title
+}: GalleryCellProps) => {
   const showLayerDetailsOnHover = description && title
 
   return (
-    <div className={gridCellClassName}>
+    <div className={classNames(gridCellClassName, className)}>
       {showLayerDetailsOnHover && (
         <div className={gridCellContentClassName}>
           {description && title && `${title.toUpperCase()} :: ${description}`}

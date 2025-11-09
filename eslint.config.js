@@ -74,13 +74,11 @@ const whitelistColorClasses = [
   )
 ]
 
-// eslint-disable-next-line no-console
-console.log('Custom color tokens detected by ESLint: ', customColorTokens)
-// eslint-disable-next-line no-console
-console.log(
-  'Tailwind color classes whitelisted in ESLint: ',
-  whitelistColorClasses
-)
+// console.log('Custom color tokens detected by ESLint: ', customColorTokens)
+// console.log(
+//   'Tailwind color classes whitelisted in ESLint: ',
+//   whitelistColorClasses
+// )
 
 const sharedRules = {
   'jsx-quotes': ['error', 'prefer-single'],
