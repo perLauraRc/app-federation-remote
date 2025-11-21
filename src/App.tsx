@@ -114,7 +114,6 @@ const App = () => (
         <ProgressBar
           bgColor="--color-english-violet"
           color="--color-black"
-          // indeterminate
           value={41.2555}
           width="75%"
         />

@@ -28,15 +28,14 @@ const ProgressBar = memo(function ProgressBar({
 }: ProgressBarProps) {
   const clampedValue = Math.max(0, Math.min(100, value ?? 0))
 
-  const getHeightClass = () => {
-    return indeterminate ? 'h-[4px]' : 'h-[24px]'
-  }
+  const heightClass = indeterminate ? 'h-[4px]' : 'h-[24px]'
 
   if (indeterminate) {
     return (
       <div
+        aria-busy="true"
         aria-label={ariaLabel ?? `Loading...`}
-        className={`relative flex ${getHeightClass()} max-w-full items-center ${className ?? ''} overflow-hidden`}
+        className={`relative flex ${heightClass} max-w-full items-center ${className ?? ''} overflow-hidden`}
         data-testid="progress-bar-container"
         role="progressbar"
         style={{
@@ -45,8 +44,9 @@ const ProgressBar = memo(function ProgressBar({
         }}
       >
         <div
-          className="h-full w-full origin-[0%_50%] animate-(--animate-indeterminate)"
+          className="h-full w-full origin-[0%_50%]"
           style={{
+            animation: 'var(--animate-indeterminate)',
             backgroundColor: `var(${color})`
           }}
         />
@@ -60,7 +60,7 @@ const ProgressBar = memo(function ProgressBar({
       aria-valuemin={0}
       aria-valuemax={100}
       aria-label={ariaLabel ?? `${clampedValue}% complete`}
-      className={`relative flex h-[24px] max-w-full items-center ${className ?? ''}`}
+      className={`relative flex ${heightClass} max-w-full items-center ${className ?? ''}`}
       data-testid="progress-bar-container"
       role="progressbar"
       style={{
