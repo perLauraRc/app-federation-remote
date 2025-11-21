@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest'
 import ProgressBar from './ProgressBar'
 
 describe('ProgressBar', () => {
-  it('renders progress with accurate values', () => {
+  it('should render progress with accurate values', () => {
     render(<ProgressBar value={9.5238} />)
     expect(screen.getByText('10%')).toBeInTheDocument()
     const progressBar = screen.getByRole('progressbar')
@@ -11,7 +11,7 @@ describe('ProgressBar', () => {
     expect(progressBar).toHaveAttribute('aria-valuenow', '9.5238')
   })
 
-  it('renders progress with default props', () => {
+  it('should render progress with default props', () => {
     render(<ProgressBar value={33.1234} />)
     const progressBar = screen.getByRole('progressbar')
     expect(progressBar).toBeInTheDocument()
@@ -37,7 +37,7 @@ describe('ProgressBar', () => {
     )
   })
 
-  it('renders with custom width and colors', () => {
+  it('should render with custom width and colors', () => {
     render(
       <ProgressBar
         bgColor="--color-powder-blue"

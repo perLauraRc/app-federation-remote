@@ -112,10 +112,18 @@ const App = () => (
       </GalleryCell>
       <GalleryCell>
         <ProgressBar
-          bgColor="--color-violet"
-          color="--color-moonstone"
-          value={33.34}
-          width="70%"
+          bgColor="--color-english-violet"
+          color="--color-black"
+          value={41.2555}
+          width="75%"
+        />
+      </GalleryCell>
+      <GalleryCell>
+        <ProgressBar
+          bgColor="--color-english-violet"
+          color="--color-powder-blue"
+          indeterminate
+          value={41.2555}
         />
       </GalleryCell>
       <GalleryCell>
