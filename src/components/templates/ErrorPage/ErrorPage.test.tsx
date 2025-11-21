@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest'
 import ErrorPage from './ErrorPage'
 
 describe('ErrorPage', () => {
-  it('renders default error message along with title and standard error', () => {
+  it('should render default error message along with title and standard error', () => {
     render(<ErrorPage title="Not Found" />)
     expect(screen.getByText('Error')).toBeInTheDocument()
     expect(screen.getByText('Not Found')).toBeInTheDocument()
@@ -12,7 +12,7 @@ describe('ErrorPage', () => {
     ).toBeInTheDocument()
   })
 
-  it('renders custom error message and error with status code', () => {
+  it('should render custom error message and error with status code', () => {
     render(
       <ErrorPage
         message="It seems the page you are trying to access does not exist."

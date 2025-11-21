@@ -14,13 +14,13 @@ describe('FixturesCarousel', () => {
     vi.useRealTimers()
   })
 
-  it('renders fixtures title', () => {
+  it('should render fixtures title', () => {
     render(
       <FixturesCarousel fixtures={matchesWithFavoriteFilter} visibleCount={1} />
     )
     expect(screen.getByText('UEFA Champions League')).toBeInTheDocument()
   })
-  it('renders fixtures items', () => {
+  it('should render fixtures items', () => {
     render(
       <FixturesCarousel fixtures={matchesWithFavoriteFilter} visibleCount={2} />
     )

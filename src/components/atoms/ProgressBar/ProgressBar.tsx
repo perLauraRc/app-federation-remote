@@ -9,10 +9,12 @@ export interface ProgressBarProps {
   className?: string
   /** Progress color (Tailwind color variable name) */
   color?: string
+  /** Indeterminate state (for indeterminate progress) */
+  indeterminate?: boolean
+  /** Progress value (0-100) */
+  value?: number
   /** Width in pixels or percentage (e.g. "100%" / "32px") */
   width?: string
-  /** Progress value (0-100) */
-  value: number
 }
 
 const ProgressBar = memo(function ProgressBar({
@@ -20,10 +22,37 @@ const ProgressBar = memo(function ProgressBar({
   bgColor,
   className,
   color = '--color-white',
-  width = '100%',
-  value
+  indeterminate,
+  value,
+  width = '100%'
 }: ProgressBarProps) {
-  const clampedValue = Math.max(0, Math.min(100, value))
+  const clampedValue = Math.max(0, Math.min(100, value ?? 0))
+
+  const getHeightClass = () => {
+    return indeterminate ? 'h-[4px]' : 'h-[24px]'
+  }
+
+  if (indeterminate) {
+    return (
+      <div
+        aria-label={ariaLabel ?? `Loading...`}
+        className={`relative flex ${getHeightClass()} max-w-full items-center ${className ?? ''} overflow-hidden`}
+        data-testid="progress-bar-container"
+        role="progressbar"
+        style={{
+          backgroundColor: bgColor ? `var(${bgColor})` : 'var(--color-black)',
+          width: `${width}`
+        }}
+      >
+        <div
+          className="h-full w-full origin-[0%_50%] animate-(--animate-indeterminate)"
+          style={{
+            backgroundColor: `var(${color})`
+          }}
+        />
+      </div>
+    )
+  }
 
   return (
     <div

@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest'
 import CircleProgress from './CircleProgress'
 
 describe('CircleProgress', () => {
-  it('renders progress with accurate values', () => {
+  it('should render progress with accurate values', () => {
     render(<CircleProgress value={9.5238} />)
     expect(screen.getByText('10%')).toBeInTheDocument()
     const progressBar = screen.getByRole('progressbar')
@@ -11,7 +11,7 @@ describe('CircleProgress', () => {
     expect(progressBar).toHaveAttribute('aria-valuenow', '9.5238')
   })
 
-  it('renders progress with default props', () => {
+  it('should render progress with default props', () => {
     render(<CircleProgress value={33.1234} />)
     const progressBar = screen.getByRole('progressbar')
     expect(progressBar).toBeInTheDocument()
@@ -37,7 +37,7 @@ describe('CircleProgress', () => {
     )
   })
 
-  it('renders with custom size and colors', () => {
+  it('should render with custom size and colors', () => {
     const { container } = render(
       <CircleProgress
         bgColor="--color-powder-blue"

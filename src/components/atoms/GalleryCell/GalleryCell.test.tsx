@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest'
 import GalleryCell from './GalleryCell'
 
 describe('GalleryCell', () => {
-  it('renders children', () => {
+  it('should render children', () => {
     render(
       <GalleryCell>
         <p>Test Children</p>
@@ -12,7 +12,7 @@ describe('GalleryCell', () => {
     expect(screen.getByText('Test Children')).toBeInTheDocument()
   })
 
-  it('renders children, description and title', () => {
+  it('should render children, description and title', () => {
     render(
       <GalleryCell description="Test Description" title="Test Title">
         <p>Test Children</p>

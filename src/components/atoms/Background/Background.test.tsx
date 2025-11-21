@@ -4,14 +4,14 @@ import Background from './Background'
 import { AspectRatios, Sizes } from './constants/Background'
 
 describe('Background', () => {
-  it('renders nothing', () => {
+  it('should render nothing', () => {
     render(
       <Background aspectRatio={AspectRatios['16/9']} position={'absolute'} />
     )
     expect(screen.queryByTestId('background-container')).toBeNull()
   })
 
-  it('renders background image', () => {
+  it('should render background image', () => {
     render(<Background src="https://picsum.photos/200/300" />)
     expect(screen.queryByTestId('background-container')).not.toBeNull()
     // expect(screen.getByText('10%')).toBeInTheDocument()
@@ -20,7 +20,7 @@ describe('Background', () => {
     // expect(progressBar).toHaveAttribute('aria-valuenow', '9.5238')
   })
 
-  it('renders background image with accurate css', () => {
+  it('should render background image with accurate css', () => {
     render(
       <Background
         aspectRatio={AspectRatios['16/9']}
