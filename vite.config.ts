@@ -57,6 +57,10 @@ export default defineConfig({
           import: 'src/components/atoms/Icon/FavoriteIcon',
           dontAppendStylesToHead: true
         },
+        './Loader': {
+          import: 'src/components/atoms/Loader/Loader',
+          dontAppendStylesToHead: true
+        },
         './MenuIcon': {
           import: 'src/components/atoms/Icon/MenuIcon',
           dontAppendStylesToHead: true
