@@ -1,6 +1,6 @@
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import theodore_her from './assets/theodore-her.jpg'
+import reactLogo from '@src/assets/react.svg'
+import viteLogo from '@src/assets/vite.svg'
+import theodore_her from '@src/assets/theodore-her.jpg'
 import './App.css'
 import {
   Background,
@@ -18,7 +18,8 @@ import {
   MenuIcon,
   NotificationIcon,
   ArrowLeftIcon,
-  ArrowRightIcon
+  ArrowRightIcon,
+  Loader
 } from '@src/components'
 
 import type { FixtureFilter, Match } from '@src/types'
@@ -124,6 +125,14 @@ const App = () => (
           color="--color-powder-blue"
           indeterminate
           value={41.2555}
+        />
+      </GalleryCell>
+      <GalleryCell>
+        <Loader
+          ariaLabel="Processing data...."
+          bgColor="--color-powder-blue"
+          color="--color-tiktok-red"
+          size="small"
         />
       </GalleryCell>
       <GalleryCell>

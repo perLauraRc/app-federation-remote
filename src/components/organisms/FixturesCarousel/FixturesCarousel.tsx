@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { useCallback, useEffect, useRef, useState } from 'react'
 import type { FixtureFilter, Match, Team } from '@src/types'
 import { MatchStatuses } from '@src/constants/restApi'
@@ -18,7 +17,7 @@ export interface FixturesCarouselProps {
   visibleCount?: number
 }
 
-const FixturesCarousel = ({
+export const FixturesCarousel = ({
   autoScrollInterval = 0,
   className,
   fixtures,
@@ -115,6 +114,7 @@ const FixturesCarousel = ({
     try {
       containerRef.current.setPointerCapture(e.pointerId)
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.log('setPointerCapture failed:', error)
     }
   }
@@ -127,6 +127,7 @@ const FixturesCarousel = ({
     try {
       containerRef.current.releasePointerCapture(e.pointerId)
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.log('releasePointerCapture failed:', error)
     }
   }
@@ -329,5 +330,3 @@ function TeamBlock({ team }: TeamBlockProps) {
     </div>
   )
 }
-
-export default FixturesCarousel

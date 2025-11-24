@@ -47,11 +47,9 @@ describe('CircleProgress', () => {
         value={75}
       />
     )
-
     const svg = container.querySelector('svg')
     expect(svg).toHaveAttribute('width', '200')
     expect(svg).toHaveAttribute('height', '200')
-
     const circles = container.querySelectorAll('circle')
     expect(circles[0]).toHaveAttribute('r', String((200 - 16) / 2))
     expect(circles[0]).toHaveAttribute('stroke', 'var(--color-powder-blue)')

@@ -19,9 +19,9 @@ export interface ProgressBarProps {
 
 const ProgressBar = memo(function ProgressBar({
   ariaLabel,
-  bgColor,
+  bgColor = '--color-white',
   className,
-  color = '--color-white',
+  color = '--color-moonstone',
   indeterminate,
   value,
   width = '100%'
@@ -39,7 +39,7 @@ const ProgressBar = memo(function ProgressBar({
         data-testid="progress-bar-container"
         role="progressbar"
         style={{
-          backgroundColor: bgColor ? `var(${bgColor})` : 'var(--color-black)',
+          backgroundColor: `var(${bgColor})`,
           width: `${width}`
         }}
       >
@@ -64,7 +64,7 @@ const ProgressBar = memo(function ProgressBar({
       data-testid="progress-bar-container"
       role="progressbar"
       style={{
-        backgroundColor: bgColor ? `var(${bgColor})` : 'var(--color-black)',
+        backgroundColor: `var(${bgColor})`,
         width: `${width}`
       }}
     >
