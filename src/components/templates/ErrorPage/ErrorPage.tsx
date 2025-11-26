@@ -1,5 +1,3 @@
-// import React from 'react'
-
 export interface ErrorPageProps {
   /** Optional action component (e.g., button) */
   action?: React.ReactNode

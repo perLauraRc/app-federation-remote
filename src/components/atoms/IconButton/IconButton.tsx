@@ -1,4 +1,4 @@
-// You still need to import React when you use React's APIs directly
+// React still needs to be imported when you use React's APIs directly
 import React from 'react'
 
 import type { IconProps } from '@src/types'

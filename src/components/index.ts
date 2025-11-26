@@ -1,5 +1,3 @@
-export { default as FixturesCarousel } from './organisms/FixturesCarousel/FixturesCarousel'
-
 export {
   ArrowLeftIcon,
   ArrowRightIcon,
@@ -13,8 +11,10 @@ export { default as Background } from './atoms/Background/Background'
 export type { AspectRatio, Size } from './atoms/Background/Background'
 export { Sizes, AspectRatios } from './atoms/Background/constants/Background'
 export { default as CircleProgress } from './atoms/CircleProgress/CircleProgress'
+export { FixturesCarousel } from './organisms/FixturesCarousel/FixturesCarousel'
 export { default as GalleryCell } from './atoms/GalleryCell/GalleryCell'
 export { default as IconButton } from './atoms/IconButton/IconButton'
+export { Loader } from './atoms/Loader/Loader'
 export { default as ProgressBar } from './atoms/ProgressBar/ProgressBar'
 
 export { default as ErrorPage } from './templates/ErrorPage/ErrorPage'

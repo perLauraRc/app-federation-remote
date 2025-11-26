@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react'
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest'
-import FixturesCarousel from './FixturesCarousel'
+import { FixturesCarousel } from './FixturesCarousel'
 
 import { matchesWithFavoriteFilter, zeroMatches } from '@mocks/fixtures'
 import { act } from 'react'
