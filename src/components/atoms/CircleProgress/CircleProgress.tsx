@@ -51,6 +51,7 @@ const CircleProgress = memo(function CircleProgress({
         fill="transparent"
         r={radius}
         stroke={bgColor ? `var(${bgColor})` : 'var(--color-black)'}
+        strokeOpacity={0.5}
         strokeWidth={strokeWidth}
       />
       <circle
@@ -67,7 +68,8 @@ const CircleProgress = memo(function CircleProgress({
       />
       <text
         dominantBaseline="central"
-        fill={`var(${color})`}
+        fill={`var(${bgColor})`}
+        opacity={0.5}
         fontWeight="bold"
         fontSize={`var(--text-2xl)`}
         stroke="transparent"
